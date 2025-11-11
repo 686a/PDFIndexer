@@ -1,0 +1,235 @@
+﻿namespace WindowsFormsApp3
+{
+    partial class Form1
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.QueryInputBox = new System.Windows.Forms.TextBox();
+            this.IndexAllButton = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.FilenameLabel = new System.Windows.Forms.Label();
+            this.OpenInNewWindowButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.DetachButton = new System.Windows.Forms.Button();
+            this.WebViewVirtualPanel = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.WebViewVirtualPanel.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // QueryInputBox
+            // 
+            this.QueryInputBox.Font = new System.Drawing.Font("Malgun Gothic", 10F);
+            this.QueryInputBox.Location = new System.Drawing.Point(12, 15);
+            this.QueryInputBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.QueryInputBox.Name = "QueryInputBox";
+            this.QueryInputBox.Size = new System.Drawing.Size(1225, 25);
+            this.QueryInputBox.TabIndex = 2;
+            this.QueryInputBox.TextChanged += new System.EventHandler(this.QueryInputBox_TextChanged);
+            // 
+            // IndexAllButton
+            // 
+            this.IndexAllButton.Location = new System.Drawing.Point(1064, 593);
+            this.IndexAllButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.IndexAllButton.Name = "IndexAllButton";
+            this.IndexAllButton.Size = new System.Drawing.Size(92, 29);
+            this.IndexAllButton.TabIndex = 4;
+            this.IndexAllButton.Text = "모두 인덱싱";
+            this.IndexAllButton.UseVisualStyleBackColor = true;
+            this.IndexAllButton.Click += new System.EventHandler(this.IndexAllButton_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(79, 593);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(535, 29);
+            this.progressBar1.TabIndex = 5;
+            // 
+            // FilenameLabel
+            // 
+            this.FilenameLabel.AutoSize = true;
+            this.FilenameLabel.Location = new System.Drawing.Point(622, 55);
+            this.FilenameLabel.Name = "FilenameLabel";
+            this.FilenameLabel.Size = new System.Drawing.Size(53, 15);
+            this.FilenameLabel.TabIndex = 6;
+            this.FilenameLabel.Text = "filename";
+            // 
+            // OpenInNewWindowButton
+            // 
+            this.OpenInNewWindowButton.Location = new System.Drawing.Point(1046, 48);
+            this.OpenInNewWindowButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.OpenInNewWindowButton.Name = "OpenInNewWindowButton";
+            this.OpenInNewWindowButton.Size = new System.Drawing.Size(110, 29);
+            this.OpenInNewWindowButton.TabIndex = 7;
+            this.OpenInNewWindowButton.Text = "다른 앱으로 열기";
+            this.OpenInNewWindowButton.UseVisualStyleBackColor = true;
+            this.OpenInNewWindowButton.Click += new System.EventHandler(this.OpenInNewWindowButton_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1162, 593);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 29);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "설정";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(957, 593);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(101, 29);
+            this.button2.TabIndex = 9;
+            this.button2.Text = "Index Missing";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(9, 593);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 29);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Not Ready";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // DetachButton
+            // 
+            this.DetachButton.Location = new System.Drawing.Point(1162, 48);
+            this.DetachButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.DetachButton.Name = "DetachButton";
+            this.DetachButton.Size = new System.Drawing.Size(75, 29);
+            this.DetachButton.TabIndex = 11;
+            this.DetachButton.Text = "Detach";
+            this.DetachButton.UseVisualStyleBackColor = true;
+            this.DetachButton.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // WebViewVirtualPanel
+            // 
+            this.WebViewVirtualPanel.Controls.Add(this.label2);
+            this.WebViewVirtualPanel.Location = new System.Drawing.Point(625, 85);
+            this.WebViewVirtualPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.WebViewVirtualPanel.Name = "WebViewVirtualPanel";
+            this.WebViewVirtualPanel.Size = new System.Drawing.Size(612, 500);
+            this.WebViewVirtualPanel.TabIndex = 12;
+            this.WebViewVirtualPanel.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 15);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(57, 15);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "WebView";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 85);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(605, 500);
+            this.flowLayoutPanel1.TabIndex = 13;
+            this.flowLayoutPanel1.WrapContents = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 55);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 15);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "검색 결과";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(842, 593);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(109, 29);
+            this.button3.TabIndex = 15;
+            this.button3.Text = "Find Duplicates";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1249, 631);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.WebViewVirtualPanel);
+            this.Controls.Add(this.DetachButton);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.OpenInNewWindowButton);
+            this.Controls.Add(this.FilenameLabel);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.IndexAllButton);
+            this.Controls.Add(this.QueryInputBox);
+            this.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Name = "Form1";
+            this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.WebViewVirtualPanel.ResumeLayout(false);
+            this.WebViewVirtualPanel.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+        private System.Windows.Forms.TextBox QueryInputBox;
+        private System.Windows.Forms.Button IndexAllButton;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label FilenameLabel;
+        private System.Windows.Forms.Button OpenInNewWindowButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button DetachButton;
+        private System.Windows.Forms.Panel WebViewVirtualPanel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button3;
+    }
+}
+
