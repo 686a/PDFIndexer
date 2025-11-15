@@ -23,16 +23,22 @@ namespace WindowsFormsApp3
             InitializeComponent();
         }
 
-        private async void DuplicateManagerView_Load(object sender, EventArgs e)
+        private void DuplicateManagerView_Load(object sender, EventArgs e)
         {
+            LoadDuplicates();
+        }
+
+        private async void LoadDuplicates()
+        {
+            // 중복 파일 로드
             await Task.Run(() =>
             {
                 var foundHashes = Indexer.GetDuplicateFiles(indexer);
 
-                label3.BeginInvoke((MethodInvoker) delegate
-                {
-                    label3.Text = foundHashes.Length.ToString();
-                });
+                //label3.BeginInvoke((MethodInvoker) delegate
+                //{
+                //    label3.Text = foundHashes.Length.ToString();
+                //});
 
                 foreach (var hash in foundHashes)
                 {
@@ -40,12 +46,17 @@ namespace WindowsFormsApp3
                     flowLayoutPanel1.BeginInvoke((MethodInvoker)delegate
                     {
                         var label = new Label();
-                        label.Text = $"{items[0].Title}";
+                        label.AutoSize = true;
+                        string text = "";
+                        foreach (var item in items)
+                        {
+                            text += $"{item.Title} - {item.Path}\n";
+                        }
+                        label.Text = text;
                         flowLayoutPanel1.Controls.Add(label);
                     });
                 }
             });
-            
         }
     }
 }

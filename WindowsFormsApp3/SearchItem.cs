@@ -63,6 +63,7 @@ namespace WindowsFormsApp3
         {
             Title = doc.Get("title");
             AbsolutePath = doc.Get("path");
+            Path = doc.Get("path"); // TODO: Fix
             Page = int.Parse(doc.Get("page"));
             Hash = doc.Get("md5");
             LastModified = long.Parse(doc.Get("lastModified"));

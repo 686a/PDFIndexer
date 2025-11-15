@@ -27,13 +27,6 @@ namespace WindowsFormsApp3
             }
         }
 
-        [DefaultValue(null)]
-        public override Font Font
-        {
-            get { return base.Font; }
-            set { base.Font = value; }
-        }
-
         private bool IsLoad = false;
 
         // Children
@@ -53,8 +46,6 @@ namespace WindowsFormsApp3
         protected override void OnParentFontChanged(EventArgs e)
         {
             base.OnParentFontChanged(e);
-
-            Font = Parent.Font;
         }
 
         private void CreateItems()
@@ -67,17 +58,7 @@ namespace WindowsFormsApp3
                 BackColor = Color.Transparent,
             };
 
-            pictureBox.MouseHover += (_, e) => base.OnMouseHover(e);
-            pictureBox.MouseEnter += (_, e) => base.OnMouseEnter(e);
-            pictureBox.MouseLeave += (_, e) => base.OnMouseLeave(e);
-            pictureBox.MouseMove += (_, e) => base.OnMouseMove(e);
-            pictureBox.MouseClick += (s, e) => base.OnMouseClick(e);
-            pictureBox.MouseDoubleClick += (s, e) => base.OnMouseDoubleClick(e);
-            pictureBox.MouseDown += (s, e) => base.OnMouseDown(e);
-            pictureBox.MouseUp += (s, e) => base.OnMouseUp(e);
-            pictureBox.GotFocus += (s, e) => base.OnGotFocus(e);
-            pictureBox.LostFocus += (s, e) => base.OnLostFocus(e);
-
+            PassthroughEvents(pictureBox);
             Controls.Add(pictureBox);
 
             // Label
@@ -88,6 +69,7 @@ namespace WindowsFormsApp3
                 AutoSize = true,
             };
 
+            PassthroughEvents(label);
             Controls.Add(label);
 
             IsLoad = true;
@@ -128,6 +110,20 @@ namespace WindowsFormsApp3
             {
                 UpdateLayout();
             }
+        }
+
+        private void PassthroughEvents(Control control)
+        {
+            control.MouseHover += (_, e) => base.OnMouseHover(e);
+            control.MouseEnter += (_, e) => base.OnMouseEnter(e);
+            control.MouseLeave += (_, e) => base.OnMouseLeave(e);
+            control.MouseMove += (_, e) => base.OnMouseMove(e);
+            control.MouseClick += (s, e) => base.OnMouseClick(e);
+            control.MouseDoubleClick += (s, e) => base.OnMouseDoubleClick(e);
+            control.MouseDown += (s, e) => base.OnMouseDown(e);
+            control.MouseUp += (s, e) => base.OnMouseUp(e);
+            control.GotFocus += (s, e) => base.OnGotFocus(e);
+            control.LostFocus += (s, e) => base.OnLostFocus(e);
         }
     }
 }

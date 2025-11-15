@@ -109,21 +109,38 @@ namespace WindowsFormsApp3
                 titleLabel.Font.Unit
             );
             titleLabel.BackColor = Color.Transparent;
+            PassthroughEvents(titleLabel);
             Controls.Add(titleLabel);
 
             pathLabel = new Label();
             pathLabel.Text = Path;
             pathLabel.AutoSize = true;
             pathLabel.BackColor = Color.Transparent;
+            PassthroughEvents(pathLabel);
             Controls.Add(pathLabel);
 
             pageLabel = new Label();
             pageLabel.Text = $"p{Page}";
             pageLabel.AutoSize = true;
             pageLabel.BackColor = Color.Transparent;
+            PassthroughEvents(pageLabel);
             Controls.Add(pageLabel);
 
             IsLoad = true;
+        }
+
+        private void PassthroughEvents(Control control)
+        {
+            control.MouseHover += (_, e) => base.OnMouseHover(e);
+            control.MouseEnter += (_, e) => base.OnMouseEnter(e);
+            control.MouseLeave += (_, e) => base.OnMouseLeave(e);
+            control.MouseMove += (_, e) => base.OnMouseMove(e);
+            control.MouseClick += (s, e) => base.OnMouseClick(e);
+            control.MouseDoubleClick += (s, e) => base.OnMouseDoubleClick(e);
+            control.MouseDown += (s, e) => base.OnMouseDown(e);
+            control.MouseUp += (s, e) => base.OnMouseUp(e);
+            control.GotFocus += (s, e) => base.OnGotFocus(e);
+            control.LostFocus += (s, e) => base.OnLostFocus(e);
         }
 
         public override string Text => $"\n\n\n\n";
