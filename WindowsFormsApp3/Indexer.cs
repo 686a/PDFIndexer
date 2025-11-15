@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
+using WindowsFormsApp3.Journal;
 using static Lucene.Net.Documents.Field;
 using static Lucene.Net.Util.Packed.PackedInt32s;
 using LuceneDirectory = Lucene.Net.Store.Directory;
@@ -58,6 +59,8 @@ namespace WindowsFormsApp3
 
         public void Initalize()
         {
+            Logger.Write(JournalLevel.Info, "Indexer 초기화");
+
             indexDirectory = FSDirectory.Open(Path.Combine(indexPath, ".index"));
 
             analyzer = new StandardAnalyzer(luceneVersion);
@@ -66,12 +69,18 @@ namespace WindowsFormsApp3
             {
                 searcher = GetIndexSearcher();
                 SetReadyState(true);
+
+                Logger.Write("기존 인덱스 찾음");
             }
             catch (DirectoryNotFoundException)
             {
                 // 인덱스 없음
                 searcher = null;
+
+                Logger.Write(JournalLevel.Warning, "디스크에 저장된 인덱스 없음");
             }
+
+            Logger.Write(JournalLevel.Info, "Indexer 초기화 --> 완료");
         }
 
         #region Finalize 관련
@@ -111,15 +120,10 @@ namespace WindowsFormsApp3
 
         protected virtual void Ready()
         {
+            Logger.Write(JournalLevel.Info, "Indexer Ready");
             OnReady?.Invoke();
         }
         #endregion 이벤트 관련
-
-        private IndexSearcher GetIndexSearcher()
-        {
-            reader = DirectoryReader.Open(indexDirectory);
-            return new IndexSearcher(reader);
-        }
 
         #region 유틸리티 메서드
         private static string GetHashFromFile(string path)
@@ -141,6 +145,12 @@ namespace WindowsFormsApp3
         }
         #endregion 유틸리티 메서드
 
+        private IndexSearcher GetIndexSearcher()
+        {
+            reader = DirectoryReader.Open(indexDirectory);
+            return new IndexSearcher(reader);
+        }
+
         private IndexWriter GetIndexWriter()
         {
             IndexWriterConfig indexConfig = new IndexWriterConfig(luceneVersion, analyzer);
@@ -156,6 +166,8 @@ namespace WindowsFormsApp3
         /// <param name="pdfs">인덱싱할 pdf들의 경로입니다</param>
         public void IndexPdfs(string[] pdfs)
         {
+            Logger.Write(JournalLevel.Info, $"IndexPdfs 요청 - 요청된 PDF 수:{pdfs.Length}");
+
             var writer = GetIndexWriter();
 
             foreach (var path in pdfs)
@@ -187,14 +199,17 @@ namespace WindowsFormsApp3
 
                         // TODO: Cron task에 이미지 OCR
 
-                        Debug.WriteLine($"Index done: {path}");
+                        Logger.Write($"IndexPdfs - Index done: {path} {page.Number}/{pages.Count()} page");
                         writer.AddDocument(doc);
                     }
                 }
             }
 
+            Logger.Write(JournalLevel.Info, "IndexPdfs 정리 중..");
             writer.Commit();
             writer.Dispose();
+
+            Logger.Write(JournalLevel.Info, "IndexPdfs 완료.");
 
             Initalize();
         }
