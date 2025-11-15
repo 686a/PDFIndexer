@@ -41,6 +41,7 @@ namespace PDFIndexer
 
         private void AppendLog(JournalMessage log)
         {
+            if (!Visible) return;
             logListView.BeginInvoke((MethodInvoker) delegate
             {
                 ListViewItem item = new ListViewItem(log.Level.ToString());
