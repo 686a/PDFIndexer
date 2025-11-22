@@ -32,10 +32,11 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.clearButton = new System.Windows.Forms.Button();
             this.logLevelComboBox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ResetSettingsButton = new System.Windows.Forms.Button();
             this.logListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +62,7 @@
             this.flowLayoutPanel1.Controls.Add(this.clearButton);
             this.flowLayoutPanel1.Controls.Add(this.logLevelComboBox);
             this.flowLayoutPanel1.Controls.Add(this.label1);
+            this.flowLayoutPanel1.Controls.Add(this.ResetSettingsButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 4);
@@ -70,9 +72,10 @@
             // 
             // clearButton
             // 
+            this.clearButton.AutoSize = true;
             this.clearButton.Location = new System.Drawing.Point(658, 3);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(75, 23);
+            this.clearButton.Size = new System.Drawing.Size(75, 25);
             this.clearButton.TabIndex = 0;
             this.clearButton.Text = "지우기";
             this.clearButton.UseVisualStyleBackColor = true;
@@ -85,6 +88,28 @@
             this.logLevelComboBox.Name = "logLevelComboBox";
             this.logLevelComboBox.Size = new System.Drawing.Size(121, 23);
             this.logLevelComboBox.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(491, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 31);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Level";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ResetSettingsButton
+            // 
+            this.ResetSettingsButton.AutoSize = true;
+            this.ResetSettingsButton.Location = new System.Drawing.Point(404, 3);
+            this.ResetSettingsButton.Name = "ResetSettingsButton";
+            this.ResetSettingsButton.Size = new System.Drawing.Size(81, 25);
+            this.ResetSettingsButton.TabIndex = 3;
+            this.ResetSettingsButton.Text = "설정 초기화";
+            this.ResetSettingsButton.UseVisualStyleBackColor = true;
+            this.ResetSettingsButton.Click += new System.EventHandler(this.ResetSettingsButton_Click);
             // 
             // logListView
             // 
@@ -109,17 +134,6 @@
             // 
             this.columnHeader2.Text = "Message";
             this.columnHeader2.Width = 100;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(491, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 29);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Level";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DebugForm
             // 
@@ -150,5 +164,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button ResetSettingsButton;
     }
 }

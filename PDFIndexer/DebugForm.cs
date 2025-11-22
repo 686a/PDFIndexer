@@ -13,6 +13,8 @@ namespace PDFIndexer
 {
     public partial class DebugForm : Form
     {
+        private Properties.Settings AppSettings = Properties.Settings.Default;
+
         public DebugForm()
         {
             InitializeComponent();
@@ -50,6 +52,16 @@ namespace PDFIndexer
         {
             Logger.Clear();
             logListView.Items.Clear();
+        }
+
+        private void ResetSettingsButton_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("정말로 설정을 초기화할까요?", "설정 초기화", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                AppSettings.Reset();
+                Application.Restart();
+            }
         }
 
         private void DebugForm_Load(object sender, EventArgs e)
