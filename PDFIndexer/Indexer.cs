@@ -378,9 +378,12 @@ namespace PDFIndexer
 
             // 삭제 완료 --> 인덱스 저장
             writer.Commit();
+            writer.Dispose();
+
+            indexer.Initalize();
 
             // 업데이트가 필요한 문서들 업데이트
-            indexer.IndexPdfs(toUpdate.ToArray());
+            //indexer.IndexPdfs(toUpdate.ToArray());
         }
 
         public static string[] GetDuplicateFiles(Indexer indexer)

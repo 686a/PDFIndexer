@@ -94,6 +94,8 @@ namespace PDFIndexer
             AttachWebView();
 
             duplicateManagerView = new DuplicateManagerView(indexer);
+
+            //Indexer.CleanupIndexes(indexer);
         }
 
         #region 웹뷰 관련
@@ -190,7 +192,7 @@ namespace PDFIndexer
             // 검색 쿼리 입력 시 자동 검색
             flowLayoutPanel1.Controls.Clear();
 
-var query = QueryInputBox.Text;
+            var query = QueryInputBox.Text;
             var topDocs = indexer.SearchQuery(query, 50);
             if (topDocs == null) return;
 
@@ -206,7 +208,7 @@ var query = QueryInputBox.Text;
 
         private void SearchItem_OnItemClick(string title, string path, int page)
         {
-                        OpenPDFInApp(title, path, page);
+            OpenPDFInApp(title, path, page);
         }
         #endregion 검색 관련 이벤트
 
