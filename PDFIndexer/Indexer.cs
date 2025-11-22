@@ -24,6 +24,7 @@ using PDFIndexer.Journal;
 using static Lucene.Net.Documents.Field;
 using static Lucene.Net.Util.Packed.PackedInt32s;
 using LuceneDirectory = Lucene.Net.Store.Directory;
+using Lucene.Net.Analysis.Cjk;
 
 public delegate void ReadyEventHandler();
 
@@ -63,7 +64,7 @@ namespace PDFIndexer
 
             indexDirectory = FSDirectory.Open(Path.Combine(indexPath, ".index"));
 
-            analyzer = new StandardAnalyzer(luceneVersion);
+            analyzer = new CJKAnalyzer(luceneVersion);
 
             try
             {
