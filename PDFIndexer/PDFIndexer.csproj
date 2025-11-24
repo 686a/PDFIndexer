@@ -147,6 +147,10 @@
     <Compile Include="Journal\JournalMessage.cs" />
     <Compile Include="Journal\Journal.cs" />
     <Compile Include="Journal\JournalLevel.cs" />
+    <Compile Include="SearchEngine\IOUtil.cs" />
+    <Compile Include="SearchEngine\Indexer.cs" />
+    <Compile Include="SearchEngine\LuceneProvider.cs" />
+    <Compile Include="SearchEngine\Searcher.cs" />
     <Compile Include="SearchItem.cs" />
     <Compile Include="DocumentGroup.cs" />
     <Compile Include="DuplicateManager\DuplicateManagerView.cs">
@@ -162,7 +166,6 @@
     <Compile Include="MainView\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Indexer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\SearchItemControl.cs">

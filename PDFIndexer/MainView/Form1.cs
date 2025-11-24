@@ -25,6 +25,7 @@ using PDFIndexer.Journal;
 using static Lucene.Net.Util.Fst.Builder;
 using static Lucene.Net.Util.Packed.PackedInt32s;
 using Directory = System.IO.Directory;
+using PDFIndexer.SearchEngine;
 
 namespace PDFIndexer
 {
@@ -41,7 +42,9 @@ namespace PDFIndexer
 
         // private Uri currentPdf;
 
-        private Indexer indexer;
+        private LuceneProvider Provider;
+        private Indexer Indexer;
+        private Searcher Searcher;
 
         private bool _IsIndexing = false;
         private bool IsIndexing
@@ -73,13 +76,16 @@ namespace PDFIndexer
 
         DuplicateManagerView duplicateManagerView;
 
-        public Form1()
+        public Form1(LuceneProvider provider)
         {
 #if DEBUG
             new DebugForm().Show();
 #endif
+            Provider = provider;
 
-            indexer = new Indexer(basePath);
+            // TODO: Asynchronous loading
+            Indexer = new Indexer(Provider);
+            Searcher = new Searcher(Provider);
 
             InitializeComponent();
 
@@ -90,7 +96,7 @@ namespace PDFIndexer
             pdfWebView.FormClosing += PdfWebView_FormClosing;
             AttachWebView();
 
-            duplicateManagerView = new DuplicateManagerView(indexer);
+            duplicateManagerView = new DuplicateManagerView();
 
             //Indexer.CleanupIndexes(indexer);
         }
@@ -176,7 +182,7 @@ namespace PDFIndexer
             {
                 pdfs.Clear();
                 FindAllPdfFiles(basePath, true);
-                indexer.IndexPdfs(pdfs.ToArray());
+                Indexer.IndexPdfs(pdfs.ToArray());
             });
 
             IsIndexing = false;
@@ -190,10 +196,10 @@ namespace PDFIndexer
             flowLayoutPanel1.Controls.Clear();
 
             var query = QueryInputBox.Text;
-            var topDocs = indexer.SearchQuery(query, 50);
+            var topDocs = Searcher.SearchQuery(query, 50);
             if (topDocs == null) return;
 
-            var groups = Indexer.GroupDocuments(indexer, topDocs.ScoreDocs);
+            var groups = Searcher.GroupDocuments(topDocs.ScoreDocs);
             foreach (var group in groups)
             {
                 string relativePath = group.Path.Replace($"{basePath}\\", "").Replace($"\\{group.Title}.pdf", "");
@@ -223,12 +229,6 @@ namespace PDFIndexer
 
             IndexAll();
         }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // 인덱서 정리
-            indexer.Dispose();
-        }
         #endregion 인덱서 관련 이벤트
 
         private void OpenInNewWindowButton_Click(object sender, EventArgs e)
@@ -238,33 +238,33 @@ namespace PDFIndexer
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            IsIndexing = true;
+            //IsIndexing = true;
 
-            await Task.Run(() =>
-            {
-                FindAllPdfFiles(basePath, true);
-                var missing = Indexer.GetMissingPdfs(indexer, pdfs.ToArray());
-                Debug.WriteLine("Missing:");
-                foreach (var m in missing) Debug.WriteLine(m);
-            });
+            //await Task.Run(() =>
+            //{
+            //    FindAllPdfFiles(basePath, true);
+            //    var missing = Indexer.GetMissingPdfs(indexer, pdfs.ToArray());
+            //    Debug.WriteLine("Missing:");
+            //    foreach (var m in missing) Debug.WriteLine(m);
+            //});
 
-            IsIndexing = false;
+            //IsIndexing = false;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            label1.Text = indexer.ready ? "Ready" : "Not Ready";
-            indexer.OnReady += () =>
+            label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
+            LuceneProvider.OnReady += () =>
             {
                 label1.BeginInvoke((MethodInvoker)delegate
                 {
-                    label1.Text = indexer.ready ? "Ready" : "Not Ready";
+                    label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
                 });
             };
 
             await Task.Run(() => Thread.Sleep(100));
 
-            if (!indexer.ready)
+            if (!LuceneProvider.Ready)
             {
                 var result = MessageBox.Show("인덱싱이 없습니다.\n\n인덱싱을 지금 시작할까요?", "환영합니다", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
