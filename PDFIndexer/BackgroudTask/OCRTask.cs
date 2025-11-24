@@ -1,4 +1,5 @@
-﻿using PDFIndexerShared;
+﻿using Lucene.Net.Documents;
+using PDFIndexerShared;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,10 +19,11 @@ namespace PDFIndexer.BackgroundTask
         private static Thread IPCThread;
         private static StreamReader Reader;
         private static StreamWriter Writer;
-        private static Queue<byte[]> InternalQueue = new Queue<byte[]>(); // 작업 내부 큐
+        private static Queue<OCRTask> InternalQueue = new Queue<OCRTask>(); // 작업 내부 큐
 
         private string Path;
         private int Page;
+        private byte[] Image = null;
 
         public OCRTask(string path, int page)
         {
@@ -71,7 +73,7 @@ namespace PDFIndexer.BackgroundTask
 
                     while (Client.IsConnected)
                     {
-                        Memory<byte> task;
+                        OCRTask task;
                         try
                         {
                             task = InternalQueue.Dequeue();
@@ -85,21 +87,32 @@ namespace PDFIndexer.BackgroundTask
                             continue;
                         }
 
+                        // 이미지가 없으면 스킵
+                        if (task.Image == null) continue;
+                        if (task.Image.Length == 0) continue;
+
                         /**
                             * 전송 데이터
                             * | 헤더 (4 bytes int) | body (n bytes)        |
                             * | ----------------- | --------------------- |
                             * | 데이터 길이         | 실 이미지 데이터 n bytes |
                             */
-                        byte[] header = BitConverter.GetBytes(task.Length);
+                        byte[] header = BitConverter.GetBytes(task.Image.Length);
                         Client.Write(header, 0, header.Length);
-                        Client.Write(task.ToArray(), 0, task.Length);
+                        Client.Write(task.Image.ToArray(), 0, task.Image.Length);
                         Client.Flush();
 
                         string result = Reader.ReadLine();
                         OCRPipeResponse response = PipeResponse.FromJSON<OCRPipeResponse>(result);
 
-                        // TODO: Task done
+                        Document doc = new Document
+                        {
+                            new StringField("path", task.Path, Field.Store.YES),
+                            new Int32Field("page", task.Page, Field.Store.YES),
+                            new TextField("content", response.Text, Field.Store.YES),
+                            new StringField("isOCRData", "1", Field.Store.YES),
+                        };
+                        // TODO: Write to index
 
                         Thread.Sleep(5000);
                     }
@@ -123,8 +136,8 @@ namespace PDFIndexer.BackgroundTask
                 foreach (var image in page.GetImages())
                 {
                     image.TryGetPng(out var bytes);
-
-                    InternalQueue.Enqueue(bytes);
+                    Image = bytes;
+                    InternalQueue.Enqueue(this);
                 }
             }
         }
