@@ -183,6 +183,7 @@ namespace PDFIndexer
                 pdfs.Clear();
                 FindAllPdfFiles(basePath, true);
                 Indexer.IndexPdfs(pdfs.ToArray());
+                Provider.Initialize();
             });
 
             IsIndexing = false;
@@ -256,10 +257,13 @@ namespace PDFIndexer
             label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
             LuceneProvider.OnReady += () =>
             {
-                label1.BeginInvoke((MethodInvoker)delegate
+                if (Visible)
                 {
-                    label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
-                });
+                    label1.BeginInvoke((MethodInvoker)delegate
+                    {
+                        label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
+                    });
+                }
             };
 
             await Task.Run(() => Thread.Sleep(100));

@@ -27,7 +27,7 @@ namespace PDFIndexer.SearchEngine
         private static IndexReader Reader;
         private static IndexSearcher Searcher;
 
-        private bool _IsDisposed;
+        private static bool _IsDisposed;
 
         private static bool _Ready = false;
         public static bool Ready { get { return _Ready; } }
@@ -80,16 +80,22 @@ namespace PDFIndexer.SearchEngine
 
         private void DispatchReadyEvent()
         {
-            Logger.Write(JournalLevel.Info, "Indexer Ready");
-            OnReady?.Invoke();
+            if (!_IsDisposed)
+            {
+                Logger.Write(JournalLevel.Info, "Indexer Ready");
+                OnReady?.Invoke();
+            }
         }
 
         public void Initialize()
         {
+            if (_IsDisposed) return;
+            if (Program.Disposing) return;
+
             Logger.Write(JournalLevel.Info, "LuceneProvider 초기화");
             SetReadyState(false);
 
-            IndexDirectory = FSDirectory.Open(Path.Combine(BasePath, ".index"));
+            IndexDirectory = FSDirectory.Open(Path.Combine(BasePath, "index"));
             Analyzer = new CJKAnalyzer(luceneVersion);
 
             try
