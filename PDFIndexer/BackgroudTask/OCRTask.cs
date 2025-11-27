@@ -139,8 +139,6 @@ namespace PDFIndexer.BackgroundTask
                                     Client.Write(image, 0, image.Length);
                                     Client.Flush();
 
-                                    // TODO: 파이프 끊어짐 처리
-
                                     string data = Reader.ReadLine();
                                     if (data != null)
                                     {
@@ -211,7 +209,6 @@ namespace PDFIndexer.BackgroundTask
                             Logger.Write(JournalLevel.Error, "[OCRTask-IPC] Pipe connect timeout");
 
                             // 연결 타임아웃의 경우 대부분 프로세스가 죽었을 경우임
-                            // OCR 프로세스가 갑자기 메모리 사용량이 치솟고, OOM Kill 당하는 버그가 있음.
                             // 일단 타임아웃이 되면, 프로세스 다시시작
                             if (OCRProcess != null && !OCRProcess.HasExited) OCRProcess.Kill();
                             OCRProcess = Process.Start(ocrProcessStartInfo);
@@ -298,7 +295,7 @@ namespace PDFIndexer.BackgroundTask
                 foreach (var image in images)
                 {
                     image.TryGetPng(out var bytes);
-                    // TODO: 최소 이미지 크기
+                    // 최소 이미지 크기
                     if (bytes.Length >= 1024)
                     {
                         Images.Enqueue(bytes);
