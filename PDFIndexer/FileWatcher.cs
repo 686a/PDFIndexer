@@ -9,6 +9,8 @@ namespace PDFIndexer
 {
     internal class FileWatcher
     {
+        private FileSystemWatcher FSWatcher;
+
         public FileWatcher(string path)
         {
             var watcher = new FileSystemWatcher(path);
@@ -18,9 +20,15 @@ namespace PDFIndexer
                 | NotifyFilters.LastWrite
                 | NotifyFilters.DirectoryName;
 
-            watcher.Filter = "*.pdf";
-            watcher.IncludeSubdirectories = true;
-            watcher.EnableRaisingEvents = true;
+            FSWatcher.Filter = "*.pdf";
+            FSWatcher.IncludeSubdirectories = true;
+            FSWatcher.EnableRaisingEvents = true;
+
+        }
+
+        public void Dispose()
+        {
+            FSWatcher.Dispose();
         }
     }
 }
