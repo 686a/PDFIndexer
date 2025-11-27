@@ -13,9 +13,9 @@ namespace PDFIndexer
 
         public FileWatcher(string path)
         {
-            var watcher = new FileSystemWatcher(path);
+            var FSWatcher = new FileSystemWatcher(path);
 
-            watcher.NotifyFilter = NotifyFilters.FileName
+            FSWatcher.NotifyFilter = NotifyFilters.FileName
                 | NotifyFilters.Size
                 | NotifyFilters.LastWrite
                 | NotifyFilters.DirectoryName;
@@ -23,12 +23,11 @@ namespace PDFIndexer
             FSWatcher.Filter = "*.pdf";
             FSWatcher.IncludeSubdirectories = true;
             FSWatcher.EnableRaisingEvents = true;
-
         }
 
         public void Dispose()
         {
-            FSWatcher.Dispose();
+            FSWatcher?.Dispose();
         }
     }
 }
