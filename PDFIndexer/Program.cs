@@ -21,6 +21,7 @@ namespace PDFIndexer
     {
         private static bool _Disposing = false;
         public static bool Disposing { get { return _Disposing; } }
+        private static readonly Mutex Mutex = new Mutex(initiallyOwned: false, name: "com.github.686a.PDFIndexer.MainProcess");
 
         private static readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
@@ -36,6 +37,9 @@ namespace PDFIndexer
         [STAThread]
         static void Main()
         {
+            // 단일 인스턴스 허용
+            if (!Mutex.WaitOne(TimeSpan.Zero, true)) return;
+
             Logger.Write(JournalLevel.Info, "프로그램 진입점");
 
             /**
@@ -117,6 +121,8 @@ namespace PDFIndexer
             DBContext.Dispose();
 
             Logger.Write("프로세스 정리 완료");
+
+            Mutex.ReleaseMutex();
         }
     }
 }
