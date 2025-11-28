@@ -53,9 +53,27 @@ namespace PDFIndexer.BackgroundTask
             if (OCRProcess != null) return;
             //if (!OCRProcess.HasExited) return;
 
+            string priority = "idle";
+            switch (AppSettings.OCRCPUPriority)
+            {
+                case 0:
+                    priority = "idle";
+                    break;
+                case 1:
+                    priority = "low";
+                    break;
+                case 2:
+                    priority = "normal";
+                    break;
+                case 3:
+                    priority = "high";
+                    break;
+            }
+
             var ocrProcessStartInfo = new ProcessStartInfo()
             {
                 FileName = "PDFIndexerOCR",
+                Arguments = $"--priority {priority}",
                 UseShellExecute = false,
 #if DEBUG
                 CreateNoWindow = false,

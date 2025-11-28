@@ -12,8 +12,26 @@ namespace PDFIndexer
 {
     public partial class IconTextButtonControl : Button
     {
-        public Image Icon { get; set; }
-        public string Content { get; set; }
+        private Image _Icon;
+        public Image Icon
+        {
+            get { return _Icon; }
+            set
+            {
+                _Icon = value;
+                if (pictureBox != null) pictureBox.Image = _Icon;
+            }
+        }
+        private string _Content;
+        public string Content
+        {
+            get { return _Content; }
+            set
+            {
+                _Content = value;
+                if (label != null) label.Text = _Content;
+            }
+        }
 
         private int _IconSizeOffset;
 
@@ -46,6 +64,16 @@ namespace PDFIndexer
         protected override void OnParentFontChanged(EventArgs e)
         {
             base.OnParentFontChanged(e);
+        }
+
+        protected override void OnLayout(LayoutEventArgs levent)
+        {
+            base.OnLayout(levent);
+
+            if (IsLoad)
+            {
+                UpdateLayout();
+            }
         }
 
         private void CreateItems()

@@ -27,16 +27,17 @@ using static Lucene.Net.Util.Packed.PackedInt32s;
 using Directory = System.IO.Directory;
 using PDFIndexer.SearchEngine;
 using PDFIndexer.Services;
+using PDFIndexer.SettingsView;
 
 namespace PDFIndexer
 {
     public partial class Form1 : Form
     {
-        private static readonly Properties.Settings AppSettiongs = Properties.Settings.Default;
+        private static readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
         private string basePath
         {
-            get { return AppSettiongs.BasePath; }
+            get { return AppSettings.BasePath; }
         }
 
         private readonly List<string> pdfs = new List<string>();
@@ -77,6 +78,9 @@ namespace PDFIndexer
 
         DuplicateManagerView duplicateManagerView;
 
+        // true로 설정 시 CloseToTray 설정을 무시하고 창을 닫을 수 있도록 함.
+        private bool forceQuit = false;
+
         public Form1(LuceneProvider provider)
         {
 #if DEBUG
@@ -88,6 +92,11 @@ namespace PDFIndexer
             Searcher = new Searcher(Provider);
 
             InitializeComponent();
+
+            noFileLabel.Location = new Point(
+                (WebViewVirtualPanel.ClientSize.Width / 2) - (noFileLabel.ClientSize.Width / 2),
+                (WebViewVirtualPanel.ClientSize.Height / 2) - (noFileLabel.ClientSize.Height / 2)
+            );
 
             //BackColor = Color.White;
             //TransparencyKey = Color.White;
@@ -106,10 +115,10 @@ namespace PDFIndexer
         {
             pdfWebView.TopLevel = false;
             pdfWebView.FormBorderStyle = FormBorderStyle.None;
-            pdfWebView.Location = WebViewVirtualPanel.Location;
+            pdfWebView.Location = new Point(0, 0);
             pdfWebView.Size = WebViewVirtualPanel.ClientSize;
 
-            Controls.Add(pdfWebView);
+            WebViewVirtualPanel.Controls.Add(pdfWebView);
             if (!pdfWebView.Visible) pdfWebView.Show();
 
             WebViewIsDetached = false;
@@ -280,6 +289,76 @@ namespace PDFIndexer
         private void DuplicateMangerButton_Click(object sender, EventArgs e)
         {
             duplicateManagerView.ShowDialog();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized && AppSettings.MinimizeToTray)
+            {
+                Hide();
+            }
+
+            if (!WebViewIsDetached)
+            {
+                pdfWebView.Size = WebViewVirtualPanel.ClientSize;
+            }
+
+            noFileLabel.Location = new Point(
+                (WebViewVirtualPanel.ClientSize.Width / 2) - (noFileLabel.ClientSize.Width / 2),
+                (WebViewVirtualPanel.ClientSize.Height / 2) - (noFileLabel.ClientSize.Height / 2)
+            );
+        }
+
+        private void ShowMainUIFromMinimize()
+        {
+            if (!Visible)
+            {
+                Show();
+                WindowState = FormWindowState.Normal;
+                Activate();
+            } else
+            {
+                Activate();
+            }
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ShowMainUIFromMinimize();
+        }
+
+        private void ShowMainUIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowMainUIFromMinimize();
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            forceQuit = true;
+            Close();
+        }
+
+        private void SettingsButton_Click(object sender, EventArgs e)
+        {
+            new SettingsForm().ShowDialog();
+        }
+
+        private void notifyIcon1_Click(object sender, EventArgs e)
+        {
+            if ((e as MouseEventArgs).Button == MouseButtons.Left)
+            {
+                ShowMainUIFromMinimize();
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!forceQuit && AppSettings.CloseToTray)
+            {
+                e.Cancel = true;
+                WindowState = FormWindowState.Minimized;
+                Hide();
+            }
         }
     }
 }

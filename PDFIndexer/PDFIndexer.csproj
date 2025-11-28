@@ -175,6 +175,12 @@
       <DependentUpon>PdfWebView.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\SearchEngineContext.cs" />
+    <Compile Include="SettingsView\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsView\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SetupWizard\Phase.cs" />
     <Compile Include="SetupWizard\Phases\ChoosePathPhase.cs" />
     <Compile Include="SetupWizard\Phases\DonePhase.cs" />
@@ -210,6 +216,9 @@
     </Compile>
     <EmbeddedResource Include="MainView\PdfWebView.resx">
       <DependentUpon>PdfWebView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsView\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SetupWizard\SetupWizardForm.resx">
       <DependentUpon>SetupWizardForm.cs</DependentUpon>
