@@ -247,6 +247,7 @@
             this.DetachButton.Size = new System.Drawing.Size(29, 29);
             this.DetachButton.TabIndex = 20;
             this.DetachButton.UseVisualStyleBackColor = true;
+            this.DetachButton.Click += new System.EventHandler(this.DetachButton_Click);
             // 
             // OpenInNewWindowButton
             // 
@@ -256,6 +257,7 @@
             this.OpenInNewWindowButton.Size = new System.Drawing.Size(29, 29);
             this.OpenInNewWindowButton.TabIndex = 21;
             this.OpenInNewWindowButton.UseVisualStyleBackColor = true;
+            this.OpenInNewWindowButton.Click += new System.EventHandler(this.OpenInNewWindowButton_Click);
             // 
             // panel2
             // 
@@ -377,6 +379,7 @@
             this.IndexAllButton.TabIndex = 22;
             this.IndexAllButton.Text = "모두 인덱싱";
             this.IndexAllButton.UseVisualStyleBackColor = true;
+            this.IndexAllButton.Click += new System.EventHandler(this.IndexAllButton_Click);
             // 
             // button2
             // 
@@ -402,6 +405,7 @@
             this.DuplicateMangerButton.Size = new System.Drawing.Size(114, 30);
             this.DuplicateMangerButton.TabIndex = 24;
             this.DuplicateMangerButton.UseVisualStyleBackColor = true;
+            this.DuplicateMangerButton.Click += new System.EventHandler(this.DuplicateMangerButton_Click);
             // 
             // Form1
             // 
