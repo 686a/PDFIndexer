@@ -1,5 +1,6 @@
 ﻿using PDFIndexer.BackgroundTask;
 using PDFIndexer.SearchEngine;
+using PDFIndexer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +11,17 @@ namespace PDFIndexer.BackgroudTask
 {
     internal class IndexTask : AbstractTask
     {
-        private LuceneProvider Provider;
         private string Path;
 
-        private Indexer Indexer;
-
-        public IndexTask(LuceneProvider provider, string path)
+        public IndexTask( string path)
         {
-            Provider = provider;
             Path = path;
-
-            Indexer = new Indexer(Provider);
         }
 
         public override void Run()
         {
-            Indexer.IndexPdfs(new string[] { Path });
+            new Indexer(SearchEngineContext.Provider)
+                .IndexPdfs(new string[] { Path });
         }
 
         public override string GetTaskHash()
