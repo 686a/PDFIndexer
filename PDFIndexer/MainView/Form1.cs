@@ -82,17 +82,23 @@ namespace PDFIndexer
         // true로 설정 시 CloseToTray 설정을 무시하고 창을 닫을 수 있도록 함.
         private bool forceQuit = false;
 
-        public Form1(LuceneProvider provider)
+        private bool BackgroundMode = false;
+
+        public Form1(LuceneProvider provider, bool backgroundMode = false)
         {
 #if DEBUG
             new DebugForm().Show();
 #endif
+
+            BackgroundMode = backgroundMode;
 
             // TODO: Asynchronous loading
             Indexer = new Indexer(Provider);
             Searcher = new Searcher(Provider);
 
             InitializeComponent();
+
+            if (!backgroundMode) WindowState = FormWindowState.Normal;
 
             noFileLabel.Location = new Point(
                 (WebViewVirtualPanel.ClientSize.Width / 2) - (noFileLabel.ClientSize.Width / 2),
@@ -376,6 +382,11 @@ namespace PDFIndexer
                 e.Cancel = true;
                 HideMainUI();
             }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            if (BackgroundMode) HideMainUI();
         }
     }
 }
