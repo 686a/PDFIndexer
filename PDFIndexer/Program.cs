@@ -90,7 +90,8 @@ namespace PDFIndexer
 
             // 베이스 디렉토리 생성
             string appDataPath = Path.Combine(AppSettings.BasePath, ".pdfindexer");
-            Directory.CreateDirectory(appDataPath);
+            var directory = Directory.CreateDirectory(appDataPath);
+            directory.Attributes |= FileAttributes.Hidden;
 
             // 작업 관리자
             TaskManager = new TaskManager();
