@@ -28,6 +28,7 @@ using Directory = System.IO.Directory;
 using PDFIndexer.SearchEngine;
 using PDFIndexer.Services;
 using PDFIndexer.SettingsView;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace PDFIndexer
 {
@@ -295,7 +296,7 @@ namespace PDFIndexer
         {
             if (WindowState == FormWindowState.Minimized && AppSettings.MinimizeToTray)
             {
-                Hide();
+                HideMainUI();
             }
 
             if (!WebViewIsDetached)
@@ -307,6 +308,23 @@ namespace PDFIndexer
                 (WebViewVirtualPanel.ClientSize.Width / 2) - (noFileLabel.ClientSize.Width / 2),
                 (WebViewVirtualPanel.ClientSize.Height / 2) - (noFileLabel.ClientSize.Height / 2)
             );
+        }
+
+        private void HideMainUI()
+        {
+            WindowState = FormWindowState.Minimized;
+            Hide();
+
+            if (!AppSettings.HintTrayIcon)
+            {
+                new ToastContentBuilder()
+                    .AddText("PDFIndexer가 백그라운드에서 실행중입니다")
+                    .AddText("작업표시줄의 트레이 아이콘에서 확인할 수 있습니다.")
+                    .Show();
+
+                AppSettings.HintTrayIcon = true;
+                AppSettings.Save();
+            }
         }
 
         private void ShowMainUIFromMinimize()
@@ -356,8 +374,7 @@ namespace PDFIndexer
             if (!forceQuit && AppSettings.CloseToTray)
             {
                 e.Cancel = true;
-                WindowState = FormWindowState.Minimized;
-                Hide();
+                HideMainUI();
             }
         }
     }
