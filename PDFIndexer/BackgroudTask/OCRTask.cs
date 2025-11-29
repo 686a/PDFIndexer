@@ -130,8 +130,11 @@ namespace PDFIndexer.BackgroundTask
 
                                 // 큐 Empty 패널티 부여
                                 // 큐가 비었다면 다음에도 비어있을 가능성이 높음.
-                                //Thread.Sleep(30 * 1000);
+#if DEBUG
                                 Thread.Sleep(1000);
+#else
+                                Thread.Sleep(30 * 1000);
+#endif
 
                                 continue;
                             }
