@@ -50,14 +50,16 @@
             this.noFileLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsButton = new System.Windows.Forms.Button();
             this.IndexAllButton = new PDFIndexer.IconTextButtonControl();
             this.IndexMissingButton = new PDFIndexer.IconTextButtonControl();
             this.DuplicateManagerButton = new PDFIndexer.IconTextButtonControl();
+            this.ProgressPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.IndexProgressPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.IndexProgressLabel = new System.Windows.Forms.Label();
+            this.IndexProgressBar = new System.Windows.Forms.ProgressBar();
+            this.IndexProgressTextLabel = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -68,8 +70,9 @@
             this.panel2.SuspendLayout();
             this.WebViewVirtualPanel.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
+            this.ProgressPanel.SuspendLayout();
+            this.IndexProgressPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -306,8 +309,8 @@
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel3, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ProgressPanel, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 715);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -315,33 +318,6 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1219, 42);
             this.tableLayoutPanel2.TabIndex = 28;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.progressBar1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(343, 36);
-            this.panel1.TabIndex = 25;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(256, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 21);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Not Ready";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(3, 9);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(247, 21);
-            this.progressBar1.TabIndex = 5;
             // 
             // flowLayoutPanel3
             // 
@@ -413,6 +389,77 @@
             this.DuplicateManagerButton.UseVisualStyleBackColor = true;
             this.DuplicateManagerButton.Click += new System.EventHandler(this.DuplicateMangerButton_Click);
             // 
+            // ProgressPanel
+            // 
+            this.ProgressPanel.ColumnCount = 1;
+            this.ProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.ProgressPanel.Controls.Add(this.IndexProgressPanel, 0, 0);
+            this.ProgressPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProgressPanel.Location = new System.Drawing.Point(3, 3);
+            this.ProgressPanel.MaximumSize = new System.Drawing.Size(343, 36);
+            this.ProgressPanel.Name = "ProgressPanel";
+            this.ProgressPanel.RowCount = 1;
+            this.ProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.ProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProgressPanel.Size = new System.Drawing.Size(343, 36);
+            this.ProgressPanel.TabIndex = 27;
+            this.ProgressPanel.Visible = false;
+            // 
+            // IndexProgressPanel
+            // 
+            this.IndexProgressPanel.AutoSize = true;
+            this.IndexProgressPanel.ColumnCount = 3;
+            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.IndexProgressPanel.Controls.Add(this.IndexProgressLabel, 2, 0);
+            this.IndexProgressPanel.Controls.Add(this.IndexProgressBar, 1, 0);
+            this.IndexProgressPanel.Controls.Add(this.IndexProgressTextLabel, 0, 0);
+            this.IndexProgressPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IndexProgressPanel.Location = new System.Drawing.Point(0, 0);
+            this.IndexProgressPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.IndexProgressPanel.MaximumSize = new System.Drawing.Size(343, 36);
+            this.IndexProgressPanel.Name = "IndexProgressPanel";
+            this.IndexProgressPanel.RowCount = 1;
+            this.IndexProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.IndexProgressPanel.Size = new System.Drawing.Size(343, 36);
+            this.IndexProgressPanel.TabIndex = 28;
+            // 
+            // IndexProgressLabel
+            // 
+            this.IndexProgressLabel.AutoSize = true;
+            this.IndexProgressLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IndexProgressLabel.Location = new System.Drawing.Point(292, 0);
+            this.IndexProgressLabel.MinimumSize = new System.Drawing.Size(48, 1);
+            this.IndexProgressLabel.Name = "IndexProgressLabel";
+            this.IndexProgressLabel.Size = new System.Drawing.Size(48, 36);
+            this.IndexProgressLabel.TabIndex = 3;
+            this.IndexProgressLabel.Text = "0.0%";
+            this.IndexProgressLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IndexProgressBar
+            // 
+            this.IndexProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.IndexProgressBar.Location = new System.Drawing.Point(49, 9);
+            this.IndexProgressBar.Margin = new System.Windows.Forms.Padding(0);
+            this.IndexProgressBar.Maximum = 1000;
+            this.IndexProgressBar.MaximumSize = new System.Drawing.Size(0, 18);
+            this.IndexProgressBar.Name = "IndexProgressBar";
+            this.IndexProgressBar.Size = new System.Drawing.Size(240, 18);
+            this.IndexProgressBar.TabIndex = 2;
+            // 
+            // IndexProgressTextLabel
+            // 
+            this.IndexProgressTextLabel.AutoSize = true;
+            this.IndexProgressTextLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IndexProgressTextLabel.Location = new System.Drawing.Point(3, 0);
+            this.IndexProgressTextLabel.MinimumSize = new System.Drawing.Size(43, 1);
+            this.IndexProgressTextLabel.Name = "IndexProgressTextLabel";
+            this.IndexProgressTextLabel.Size = new System.Drawing.Size(43, 36);
+            this.IndexProgressTextLabel.TabIndex = 1;
+            this.IndexProgressTextLabel.Text = "인덱싱";
+            this.IndexProgressTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -444,8 +491,11 @@
             this.WebViewVirtualPanel.ResumeLayout(false);
             this.WebViewVirtualPanel.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
+            this.ProgressPanel.ResumeLayout(false);
+            this.ProgressPanel.PerformLayout();
+            this.IndexProgressPanel.ResumeLayout(false);
+            this.IndexProgressPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -469,9 +519,6 @@
         private System.Windows.Forms.TextBox QueryInputBox;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button SettingsButton;
         private IconTextButtonControl DuplicateManagerButton;
@@ -480,6 +527,11 @@
         private System.Windows.Forms.Label noFileLabel;
         private IconTextButtonControl IndexAllButton;
         private IconTextButtonControl IndexMissingButton;
+        private System.Windows.Forms.TableLayoutPanel ProgressPanel;
+        private System.Windows.Forms.TableLayoutPanel IndexProgressPanel;
+        private System.Windows.Forms.Label IndexProgressLabel;
+        private System.Windows.Forms.ProgressBar IndexProgressBar;
+        private System.Windows.Forms.Label IndexProgressTextLabel;
     }
 }
 

@@ -16,12 +16,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
+using Windows.UI.Xaml.Shapes;
 
 namespace PDFIndexer.SearchEngine
 {
     internal class Indexer
     {
         private LuceneProvider Provider;
+
+        public delegate void IndexProgressUpdate(float progress);
+
+        public event IndexProgressUpdate OnIndexProgressUpdate;
 
         public Indexer(LuceneProvider provider)
         {
@@ -36,15 +41,21 @@ namespace PDFIndexer.SearchEngine
         {
             Logger.Write(JournalLevel.Info, $"IndexPdfs 요청 - 요청된 PDF 수:{pdfs.Length}");
 
+            float progress = 0f;
+
             Provider.MarkDoneFirstIndex();
             var writer = Provider.GetIndexWriter();
 
             var dbCollection = DBContext.DB.GetCollection<IndexedDocument>("indexed");
 
-            foreach (var path in pdfs)
+            OnIndexProgressUpdate?.Invoke(progress);
+
+            for (int i = 0;  i < pdfs.Length; i++)
             {
                 // 프로그램 종료 체크
                 if (Program.Disposing) return;
+
+                var path = pdfs[i];
 
                 var filename = (path.Split('\\').LastOrDefault() ?? path).Replace(".pdf", "");
 
@@ -114,6 +125,9 @@ namespace PDFIndexer.SearchEngine
 
                     // Logger.Write($"IndexPdfs - Index done: {path} with {pages.Count()} pages");
                 }
+
+                progress = (float)(i + 1) / pdfs.Length;
+                OnIndexProgressUpdate(progress);
             }
 
             if (Program.Disposing) return;

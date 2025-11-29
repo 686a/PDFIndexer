@@ -89,6 +89,8 @@ namespace PDFIndexer
 
         private bool BackgroundMode = false;
 
+        private bool ProgressPanelInUse = false;
+
         public Form1(LuceneProvider provider, bool backgroundMode = false)
         {
 #if DEBUG
@@ -230,7 +232,37 @@ namespace PDFIndexer
             {
                 pdfs.Clear();
                 FindAllPdfFiles(basePath, true);
+
+                ProgressPanelInUse = true;
+                ProgressPanel.BeginInvoke((MethodInvoker)delegate
+                {
+                    ProgressPanel.Visible = true;
+                });
+                Indexer.OnIndexProgressUpdate += (progress) =>
+                {
+                    float percent = (float)Math.Round(progress * 100, 1);
+
+                    IndexProgressTextLabel.BeginInvoke((MethodInvoker)delegate
+                    {
+                        IndexProgressTextLabel.Text = "인덱싱";
+                    });
+
+                    IndexProgressBar.BeginInvoke((MethodInvoker)delegate
+                    {
+                        IndexProgressBar.Style = ProgressBarStyle.Blocks;
+                        IndexProgressBar.Value = (int)(percent * 10);
+                    });
+
+                    IndexProgressLabel.BeginInvoke((MethodInvoker)delegate
+                    {
+                        IndexProgressLabel.Text = $"{percent}%";
+                    });
+                };
+
                 Indexer.IndexPdfs(pdfs.ToArray());
+
+                ProgressPanelInUse = false;
+                AutohideProgressPanel();
 
                 new ToastContentBuilder()
                     .AddText("인덱싱 완료")
@@ -306,14 +338,14 @@ namespace PDFIndexer
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
+            IndexProgressTextLabel.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
             LuceneProvider.OnReady += () =>
             {
                 if (Visible)
                 {
-                    label1.BeginInvoke((MethodInvoker)delegate
+                    IndexProgressTextLabel.BeginInvoke((MethodInvoker)delegate
                     {
-                        label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
+                        IndexProgressTextLabel.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
                     });
                 }
             };
@@ -381,6 +413,21 @@ namespace PDFIndexer
             {
                 Activate();
             }
+        }
+
+        private void AutohideProgressPanel()
+        {
+            new Thread(() =>
+            {
+                Thread.Sleep(10 * 1000);
+                if (Visible && !ProgressPanelInUse)
+                {
+                    ProgressPanel.BeginInvoke((MethodInvoker)delegate
+                    {
+                        ProgressPanel.Visible = false;
+                    });
+                }
+            }).Start();
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
