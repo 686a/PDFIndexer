@@ -231,6 +231,11 @@ namespace PDFIndexer
                 pdfs.Clear();
                 FindAllPdfFiles(basePath, true);
                 Indexer.IndexPdfs(pdfs.ToArray());
+
+                new ToastContentBuilder()
+                    .AddText("인덱싱 완료")
+                    .AddText($"{pdfs.Count}개 문서가 인덱싱되었습니다.")
+                    .Show();
             });
 
             IsIndexing = false;

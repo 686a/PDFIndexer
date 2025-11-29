@@ -304,7 +304,7 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel3, 1, 0);
@@ -323,21 +323,21 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(334, 36);
+            this.panel1.Size = new System.Drawing.Size(343, 36);
             this.panel1.TabIndex = 25;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(3, 6);
+            this.label1.Location = new System.Drawing.Point(256, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 21);
+            this.label1.Size = new System.Drawing.Size(84, 21);
             this.label1.TabIndex = 10;
             this.label1.Text = "Not Ready";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(73, 6);
+            this.progressBar1.Location = new System.Drawing.Point(3, 9);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(247, 21);
@@ -353,15 +353,15 @@
             this.flowLayoutPanel3.Controls.Add(this.IndexMissingButton);
             this.flowLayoutPanel3.Controls.Add(this.DuplicateManagerButton);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(343, 3);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(352, 3);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(873, 36);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(864, 36);
             this.flowLayoutPanel3.TabIndex = 26;
             // 
             // SettingsButton
             // 
             this.SettingsButton.Image = global::PDFIndexer.Properties.Resources.SettingsIcon;
-            this.SettingsButton.Location = new System.Drawing.Point(840, 4);
+            this.SettingsButton.Location = new System.Drawing.Point(831, 4);
             this.SettingsButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SettingsButton.Name = "SettingsButton";
             this.SettingsButton.Size = new System.Drawing.Size(30, 30);
@@ -376,7 +376,7 @@
             this.IndexAllButton.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.IndexAllButton.Icon = global::PDFIndexer.Properties.Resources.DatabaseIcon;
             this.IndexAllButton.IconSizeOffset = 0;
-            this.IndexAllButton.Location = new System.Drawing.Point(720, 4);
+            this.IndexAllButton.Location = new System.Drawing.Point(711, 4);
             this.IndexAllButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.IndexAllButton.Name = "IndexAllButton";
             this.IndexAllButton.Size = new System.Drawing.Size(114, 30);
@@ -391,7 +391,7 @@
             this.IndexMissingButton.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.IndexMissingButton.Icon = global::PDFIndexer.Properties.Resources.DatabaseUploadIcon;
             this.IndexMissingButton.IconSizeOffset = 0;
-            this.IndexMissingButton.Location = new System.Drawing.Point(587, 4);
+            this.IndexMissingButton.Location = new System.Drawing.Point(578, 4);
             this.IndexMissingButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.IndexMissingButton.Name = "IndexMissingButton";
             this.IndexMissingButton.Size = new System.Drawing.Size(127, 30);
@@ -405,7 +405,7 @@
             this.DuplicateManagerButton.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DuplicateManagerButton.Icon = global::PDFIndexer.Properties.Resources.ContentCopyIcon;
             this.DuplicateManagerButton.IconSizeOffset = 0;
-            this.DuplicateManagerButton.Location = new System.Drawing.Point(467, 4);
+            this.DuplicateManagerButton.Location = new System.Drawing.Point(458, 4);
             this.DuplicateManagerButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.DuplicateManagerButton.Name = "DuplicateManagerButton";
             this.DuplicateManagerButton.Size = new System.Drawing.Size(114, 30);
