@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupWizardForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.MainTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -94,8 +95,8 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.PrevButton, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.NextButton, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.PrevButton, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.NextButton, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 44);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -107,21 +108,21 @@
             // PrevButton
             // 
             this.PrevButton.Enabled = false;
-            this.PrevButton.Location = new System.Drawing.Point(168, 3);
+            this.PrevButton.Location = new System.Drawing.Point(87, 3);
             this.PrevButton.Name = "PrevButton";
             this.PrevButton.Size = new System.Drawing.Size(75, 23);
             this.PrevButton.TabIndex = 2;
-            this.PrevButton.Text = "이전";
+            this.PrevButton.Text = "< 이전";
             this.PrevButton.UseVisualStyleBackColor = true;
             this.PrevButton.Click += new System.EventHandler(this.PrevButton_Click);
             // 
             // NextButton
             // 
-            this.NextButton.Location = new System.Drawing.Point(87, 3);
+            this.NextButton.Location = new System.Drawing.Point(168, 3);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(75, 23);
             this.NextButton.TabIndex = 1;
-            this.NextButton.Text = "계속";
+            this.NextButton.Text = "계속 >";
             this.NextButton.UseVisualStyleBackColor = true;
             this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
             // 
@@ -133,6 +134,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
