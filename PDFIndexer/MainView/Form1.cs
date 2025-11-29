@@ -133,7 +133,7 @@ namespace PDFIndexer
 
         private void DetachWebView()
         {
-            Controls.Remove(pdfWebView);
+            WebViewVirtualPanel.Controls.Remove(pdfWebView);
             pdfWebView.TopLevel = true;
             pdfWebView.FormBorderStyle = FormBorderStyle.Sizable;
 
