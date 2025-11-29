@@ -38,7 +38,7 @@
             this.QueryInputBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.SearchResultPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.FilenameLabel = new System.Windows.Forms.Label();
@@ -56,8 +56,8 @@
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsButton = new System.Windows.Forms.Button();
             this.IndexAllButton = new PDFIndexer.IconTextButtonControl();
-            this.iconTextButtonControl2 = new PDFIndexer.IconTextButtonControl();
-            this.DuplicateMangerButton = new PDFIndexer.IconTextButtonControl();
+            this.IndexMissingButton = new PDFIndexer.IconTextButtonControl();
+            this.DuplicateManagerButton = new PDFIndexer.IconTextButtonControl();
             this.contextMenuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -165,7 +165,7 @@
             this.tableLayoutPanel4.ColumnCount = 2;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.flowLayoutPanel1, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.SearchResultPanel, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.panel2, 1, 1);
@@ -178,17 +178,17 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(1219, 672);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
-            // flowLayoutPanel1
+            // SearchResultPanel
             // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 52);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(343, 616);
-            this.flowLayoutPanel1.TabIndex = 17;
-            this.flowLayoutPanel1.WrapContents = false;
+            this.SearchResultPanel.AutoScroll = true;
+            this.SearchResultPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SearchResultPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.SearchResultPanel.Location = new System.Drawing.Point(3, 52);
+            this.SearchResultPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.SearchResultPanel.Name = "SearchResultPanel";
+            this.SearchResultPanel.Size = new System.Drawing.Size(343, 616);
+            this.SearchResultPanel.TabIndex = 17;
+            this.SearchResultPanel.WrapContents = false;
             // 
             // label3
             // 
@@ -350,8 +350,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel3.Controls.Add(this.SettingsButton);
             this.flowLayoutPanel3.Controls.Add(this.IndexAllButton);
-            this.flowLayoutPanel3.Controls.Add(this.iconTextButtonControl2);
-            this.flowLayoutPanel3.Controls.Add(this.DuplicateMangerButton);
+            this.flowLayoutPanel3.Controls.Add(this.IndexMissingButton);
+            this.flowLayoutPanel3.Controls.Add(this.DuplicateManagerButton);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel3.Location = new System.Drawing.Point(343, 3);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
@@ -384,34 +384,34 @@
             this.IndexAllButton.UseVisualStyleBackColor = true;
             this.IndexAllButton.Click += new System.EventHandler(this.IndexAllButton_Click);
             // 
-            // iconTextButtonControl2
+            // IndexMissingButton
             // 
-            this.iconTextButtonControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.iconTextButtonControl2.Content = "새 파일 인덱싱";
-            this.iconTextButtonControl2.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.iconTextButtonControl2.Icon = global::PDFIndexer.Properties.Resources.DatabaseUploadIcon;
-            this.iconTextButtonControl2.IconSizeOffset = 0;
-            this.iconTextButtonControl2.Location = new System.Drawing.Point(587, 4);
-            this.iconTextButtonControl2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.iconTextButtonControl2.Name = "iconTextButtonControl2";
-            this.iconTextButtonControl2.Size = new System.Drawing.Size(127, 30);
-            this.iconTextButtonControl2.TabIndex = 26;
-            this.iconTextButtonControl2.UseVisualStyleBackColor = true;
+            this.IndexMissingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.IndexMissingButton.Content = "새 파일 인덱싱";
+            this.IndexMissingButton.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.IndexMissingButton.Icon = global::PDFIndexer.Properties.Resources.DatabaseUploadIcon;
+            this.IndexMissingButton.IconSizeOffset = 0;
+            this.IndexMissingButton.Location = new System.Drawing.Point(587, 4);
+            this.IndexMissingButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.IndexMissingButton.Name = "IndexMissingButton";
+            this.IndexMissingButton.Size = new System.Drawing.Size(127, 30);
+            this.IndexMissingButton.TabIndex = 26;
+            this.IndexMissingButton.UseVisualStyleBackColor = true;
             // 
-            // DuplicateMangerButton
+            // DuplicateManagerButton
             // 
-            this.DuplicateMangerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.DuplicateMangerButton.Content = "중복 관리자";
-            this.DuplicateMangerButton.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.DuplicateMangerButton.Icon = global::PDFIndexer.Properties.Resources.ContentCopyIcon;
-            this.DuplicateMangerButton.IconSizeOffset = 0;
-            this.DuplicateMangerButton.Location = new System.Drawing.Point(467, 4);
-            this.DuplicateMangerButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.DuplicateMangerButton.Name = "DuplicateMangerButton";
-            this.DuplicateMangerButton.Size = new System.Drawing.Size(114, 30);
-            this.DuplicateMangerButton.TabIndex = 24;
-            this.DuplicateMangerButton.UseVisualStyleBackColor = true;
-            this.DuplicateMangerButton.Click += new System.EventHandler(this.DuplicateMangerButton_Click);
+            this.DuplicateManagerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.DuplicateManagerButton.Content = "중복 관리자";
+            this.DuplicateManagerButton.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.DuplicateManagerButton.Icon = global::PDFIndexer.Properties.Resources.ContentCopyIcon;
+            this.DuplicateManagerButton.IconSizeOffset = 0;
+            this.DuplicateManagerButton.Location = new System.Drawing.Point(467, 4);
+            this.DuplicateManagerButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.DuplicateManagerButton.Name = "DuplicateManagerButton";
+            this.DuplicateManagerButton.Size = new System.Drawing.Size(114, 30);
+            this.DuplicateManagerButton.TabIndex = 24;
+            this.DuplicateManagerButton.UseVisualStyleBackColor = true;
+            this.DuplicateManagerButton.Click += new System.EventHandler(this.DuplicateMangerButton_Click);
             // 
             // Form1
             // 
@@ -463,7 +463,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button DetachButton;
         private System.Windows.Forms.Button OpenInNewWindowButton;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel SearchResultPanel;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TextBox QueryInputBox;
@@ -474,12 +474,12 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button SettingsButton;
-        private IconTextButtonControl DuplicateMangerButton;
+        private IconTextButtonControl DuplicateManagerButton;
         private System.Windows.Forms.Panel WebViewVirtualPanel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label noFileLabel;
         private IconTextButtonControl IndexAllButton;
-        private IconTextButtonControl iconTextButtonControl2;
+        private IconTextButtonControl IndexMissingButton;
     }
 }
 

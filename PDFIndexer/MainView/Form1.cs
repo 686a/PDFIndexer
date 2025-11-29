@@ -59,12 +59,15 @@ namespace PDFIndexer
             {
                 _IsIndexing = value;
 
-                //listBox1.Enabled = !value;
-                OpenInNewWindowButton.Enabled = !value;
-                IndexAllButton.Enabled = !value;
-                QueryInputBox.Enabled = !value;
+                foreach (Control control in IndexLockControls)
+                {
+                    control.Enabled = !value;
+                }
             }
         }
+
+        // 인덱스 동안 잠굴 컨트롤 목록
+        private Control[] IndexLockControls;
 
         PdfWebView pdfWebView;
         bool _WebViewIsDetached = false;
@@ -106,6 +109,26 @@ namespace PDFIndexer
                 (WebViewVirtualPanel.ClientSize.Width / 2) - (noFileLabel.ClientSize.Width / 2),
                 (WebViewVirtualPanel.ClientSize.Height / 2) - (noFileLabel.ClientSize.Height / 2)
             );
+
+            // 인덱스 동안 잠굴 컨트롤 목록
+            IndexLockControls = new Control[]
+            {
+                // 최상단
+                QueryInputBox,
+
+                // 좌측
+                SearchResultPanel,
+
+                // 우측-상단
+                OpenInNewWindowButton,
+                DetachButton,
+
+                // 우측-하단
+                SettingsButton,
+                IndexAllButton,
+                IndexMissingButton,
+                DuplicateManagerButton,
+            };
 
             //BackColor = Color.White;
             //TransparencyKey = Color.White;
@@ -201,6 +224,8 @@ namespace PDFIndexer
         {
             IsIndexing = true;
 
+            QueryInputBox.Text = "";
+
             await Task.Run(() =>
             {
                 pdfs.Clear();
@@ -216,7 +241,7 @@ namespace PDFIndexer
         private void QueryInputBox_TextChanged(object sender, EventArgs e)
         {
             // 검색 쿼리 입력 시 자동 검색
-            flowLayoutPanel1.Controls.Clear();
+            SearchResultPanel.Controls.Clear();
 
             var query = QueryInputBox.Text;
             var topDocs = Searcher.SearchQuery(query, 50);
@@ -226,9 +251,9 @@ namespace PDFIndexer
             foreach (var group in groups)
             {
                 string relativePath = group.Path.Replace($"{basePath}\\", "").Replace($"\\{group.Title}.pdf", "");
-                var searchItem = new SearchItemControl(group.Title, group.Path, relativePath, group.MatchPages, group, flowLayoutPanel1);
+                var searchItem = new SearchItemControl(group.Title, group.Path, relativePath, group.MatchPages, group, SearchResultPanel);
                 searchItem.OnItemClick += SearchItem_OnItemClick;
-                flowLayoutPanel1.Controls.Add(searchItem);
+                SearchResultPanel.Controls.Add(searchItem);
             }
         }
 
