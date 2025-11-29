@@ -14,6 +14,8 @@ namespace PDFIndexerOCR
 {
     internal class Program
     {
+        private static readonly Mutex Mutex = new Mutex(initiallyOwned: false, name: "com.github.686a.PDFIndexer.OCR");
+
         private static bool SingleMode = false;
 
         private static string Path;
@@ -32,10 +34,14 @@ namespace PDFIndexerOCR
 
             if (!SingleMode)
             {
+                if (!Mutex.WaitOne(TimeSpan.Zero, true)) return;
+
                 MainProcessWatcher();
 
                 PipeServerThread = new Thread(StartPipeServer);
                 PipeServerThread.Start();
+
+                Mutex.ReleaseMutex();
             } else
             {
                 OCRSingle();
