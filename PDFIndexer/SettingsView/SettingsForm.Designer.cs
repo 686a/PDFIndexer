@@ -777,7 +777,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = global::PDFIndexer.Properties.Resources.PDFIndexerIcon;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(910, 489);
             this.Name = "SettingsForm";
