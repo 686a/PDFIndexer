@@ -36,6 +36,7 @@ namespace PDFIndexer.SearchEngine
         {
             Logger.Write(JournalLevel.Info, $"IndexPdfs 요청 - 요청된 PDF 수:{pdfs.Length}");
 
+            Provider.MarkDoneFirstIndex();
             var writer = Provider.GetIndexWriter();
 
             var dbCollection = DBContext.DB.GetCollection<IndexedDocument>("indexed");
