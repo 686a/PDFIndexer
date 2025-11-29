@@ -6,6 +6,7 @@ using PDFIndexer.BackgroudTask;
 using PDFIndexer.BackgroundTask;
 using PDFIndexer.Journal;
 using PDFIndexer.Models;
+using PDFIndexer.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;

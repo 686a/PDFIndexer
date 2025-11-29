@@ -5,6 +5,7 @@ using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.QueryParsers.Simple;
 using Lucene.Net.Search;
 using Lucene.Net.Util;
+using PDFIndexer.Models;
 using PDFIndexer.Services;
 using System;
 using System.Collections.Generic;

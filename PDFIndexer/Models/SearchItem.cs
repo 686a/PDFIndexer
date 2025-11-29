@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PDFIndexer
+namespace PDFIndexer.Models
 {
     public class SearchItem
     {

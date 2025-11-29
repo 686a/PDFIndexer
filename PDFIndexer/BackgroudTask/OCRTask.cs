@@ -4,6 +4,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Search;
 using PDFIndexer.Journal;
 using PDFIndexer.Models;
+using PDFIndexer.Models.Database;
 using PDFIndexer.SearchEngine;
 using PDFIndexer.Services;
 using PDFIndexerShared;

@@ -51,10 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\DBContext.cs" />
-    <Compile Include="DebugForm.cs">
+    <Compile Include="Journal\View\DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DebugForm.Designer.cs">
+    <Compile Include="Journal\View\DebugForm.Designer.cs">
       <DependentUpon>DebugForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DuplicateManager\DuplicateItemControl.cs">
@@ -70,9 +70,9 @@
     <Compile Include="SearchEngine\Indexer.cs" />
     <Compile Include="SearchEngine\LuceneProvider.cs" />
     <Compile Include="SearchEngine\Searcher.cs" />
-    <Compile Include="Models\IndexedDocument.cs" />
-    <Compile Include="SearchItem.cs" />
-    <Compile Include="DocumentGroup.cs" />
+    <Compile Include="Models\Database\IndexedDocument.cs" />
+    <Compile Include="Models\SearchItem.cs" />
+    <Compile Include="Models\DocumentGroup.cs" />
     <Compile Include="DuplicateManager\DuplicateManagerView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,7 +118,7 @@
     <Compile Include="BackgroudTask\AbstractTask.cs" />
     <Compile Include="BackgroudTask\IndexTask.cs" />
     <Compile Include="BackgroudTask\TaskManager.cs" />
-    <EmbeddedResource Include="DebugForm.resx">
+    <EmbeddedResource Include="Journal\View\DebugForm.resx">
       <DependentUpon>DebugForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DuplicateManager\DuplicateManagerView.resx">
