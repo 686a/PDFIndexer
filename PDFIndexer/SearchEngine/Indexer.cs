@@ -123,7 +123,7 @@ namespace PDFIndexer.SearchEngine
                 }
 
                 progress = (float)(i + 1) / pdfs.Length;
-                OnIndexProgressUpdate(progress);
+                OnIndexProgressUpdate?.Invoke(progress);
             }
 
             if (Program.Disposing) return;
