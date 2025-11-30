@@ -282,6 +282,9 @@ namespace PDFIndexer
                 }
                 MessageBox.Show(message, "삭제 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+
+            // Reload
+            LoadDuplicates();
         }
 
         private void SelectNonebutton_Click(object sender, EventArgs e)
