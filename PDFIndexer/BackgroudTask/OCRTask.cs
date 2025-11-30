@@ -325,6 +325,8 @@ namespace PDFIndexer.BackgroundTask
 
             if (!AppSettings.OCREnabled) return;
 
+            if (!File.Exists(Path)) return;
+
             Logger.Write($"[OCRTask] {Path}/{Page} Start");
 
             var waitThread = new Thread(() =>
