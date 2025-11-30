@@ -72,6 +72,8 @@ namespace PDFIndexer
 
         private bool ProgressPanelInUse = false;
 
+        private Thread SearchTimerThread;
+
         public MainForm(LuceneProvider provider, bool backgroundMode = false)
         {
 #if DEBUG
@@ -236,23 +238,42 @@ namespace PDFIndexer
         #endregion 인덱서 관련
 
         #region 검색 관련 이벤트
-        private void QueryInputBox_TextChanged(object sender, EventArgs e)
+        private async void QueryInputBox_TextChanged(object sender, EventArgs e)
         {
-            // 검색 쿼리 입력 시 자동 검색
-            SearchResultPanel.Controls.Clear();
+            // 바로바로 검색이 아니라, 지연 시간 둠.
+            // 쿼리가 빠르게 여러번 변경 시 UI 렉을 막기 위함.
+            if (SearchTimerThread != null) SearchTimerThread.Abort();
+            SearchTimerThread = new Thread(() =>
+            {
+                Thread.Sleep(300);
+                DoSearch();
+            });
+            SearchTimerThread.Start();
+        }
+
+        private void DoSearch()
+        {
+            SearchResultPanel.BeginInvoke((MethodInvoker)delegate
+            {
+                // 검색 쿼리 입력 시 자동 검색
+                SearchResultPanel.Controls.Clear();
+            });
 
             var query = QueryInputBox.Text;
             var topDocs = Searcher.SearchQuery(query, 50);
             if (topDocs == null) return;
 
             var groups = Searcher.GroupDocuments(topDocs.ScoreDocs);
-            foreach (var group in groups)
+            SearchResultPanel.BeginInvoke((MethodInvoker)delegate
             {
-                string relativePath = group.Path.Replace($"{basePath}\\", "").Replace($"\\{group.Title}.pdf", "");
-                var searchItem = new SearchItemControl(group.Title, group.Path, relativePath, group.MatchPages, group, SearchResultPanel);
-                searchItem.OnItemClick += SearchItem_OnItemClick;
-                SearchResultPanel.Controls.Add(searchItem);
-            }
+                foreach (var group in groups)
+                {
+                    string relativePath = group.Path.Replace($"{basePath}\\", "").Replace($"\\{group.Title}.pdf", "");
+                    var searchItem = new SearchItemControl(group.Title, group.Path, relativePath, group.MatchPages, group, SearchResultPanel);
+                    searchItem.OnItemClick += SearchItem_OnItemClick;
+                    SearchResultPanel.Controls.Add(searchItem);
+                }
+            });
         }
 
         private void SearchItem_OnItemClick(string title, string path, int page)
