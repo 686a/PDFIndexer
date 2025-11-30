@@ -28,26 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.SelectedTotalSizeLabel = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ReloadButton = new PDFIndexer.IconTextButtonControl();
+            this.SelectDeleteButton = new PDFIndexer.IconTextButtonControl();
+            this.InvertSelectionButton = new PDFIndexer.IconTextButtonControl();
+            this.SelectNonebutton = new PDFIndexer.IconTextButtonControl();
+            this.SelectAllButton = new PDFIndexer.IconTextButtonControl();
             this.SuspendLayout();
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(16, 61);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(963, 439);
-            this.flowLayoutPanel1.TabIndex = 0;
-            this.flowLayoutPanel1.WrapContents = false;
             // 
             // label1
             // 
@@ -68,77 +58,108 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "중복 파일을 삭제하고 원본을 보관하여 저장공간을 확보하세요";
             // 
-            // label3
+            // SelectedTotalSizeLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(888, 30);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(91, 15);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "5개 (521.3 MB)";
+            this.SelectedTotalSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.SelectedTotalSizeLabel.Location = new System.Drawing.Point(791, 30);
+            this.SelectedTotalSizeLabel.Name = "SelectedTotalSizeLabel";
+            this.SelectedTotalSizeLabel.Size = new System.Drawing.Size(188, 15);
+            this.SelectedTotalSizeLabel.TabIndex = 3;
+            this.SelectedTotalSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // button1
+            // tableLayoutPanel1
             // 
-            this.button1.Location = new System.Drawing.Point(904, 506);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 29);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "선택 삭제";
-            this.button1.UseVisualStyleBackColor = true;
+            this.tableLayoutPanel1.AutoScroll = true;
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(16, 61);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(963, 439);
+            this.tableLayoutPanel1.TabIndex = 9;
             // 
-            // button2
+            // ReloadButton
             // 
-            this.button2.Location = new System.Drawing.Point(17, 506);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 29);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "모두 선택";
-            this.button2.UseVisualStyleBackColor = true;
+            this.ReloadButton.Content = "새로고침";
+            this.ReloadButton.Icon = global::PDFIndexer.Properties.Resources.RefreshIcon;
+            this.ReloadButton.IconSizeOffset = 0;
+            this.ReloadButton.Location = new System.Drawing.Point(16, 506);
+            this.ReloadButton.Name = "ReloadButton";
+            this.ReloadButton.Size = new System.Drawing.Size(95, 29);
+            this.ReloadButton.TabIndex = 2;
+            this.ReloadButton.UseVisualStyleBackColor = true;
+            this.ReloadButton.Click += new System.EventHandler(this.ReloadButton_Click);
             // 
-            // button3
+            // SelectDeleteButton
             // 
-            this.button3.Location = new System.Drawing.Point(98, 506);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(99, 29);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "모두 선택 취소";
-            this.button3.UseVisualStyleBackColor = true;
+            this.SelectDeleteButton.Content = "선택 삭제";
+            this.SelectDeleteButton.Icon = global::PDFIndexer.Properties.Resources.DeleteIcon;
+            this.SelectDeleteButton.IconSizeOffset = 0;
+            this.SelectDeleteButton.Location = new System.Drawing.Point(880, 506);
+            this.SelectDeleteButton.Name = "SelectDeleteButton";
+            this.SelectDeleteButton.Size = new System.Drawing.Size(99, 29);
+            this.SelectDeleteButton.TabIndex = 1;
+            this.SelectDeleteButton.UseVisualStyleBackColor = true;
+            this.SelectDeleteButton.Click += new System.EventHandler(this.SelectDeleteButton_Click);
             // 
-            // button4
+            // InvertSelectionButton
             // 
-            this.button4.Location = new System.Drawing.Point(203, 506);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(76, 29);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "선택 반전";
-            this.button4.UseVisualStyleBackColor = true;
+            this.InvertSelectionButton.Content = "선택 반전";
+            this.InvertSelectionButton.Icon = global::PDFIndexer.Properties.Resources.MoveSelectionRightIcon;
+            this.InvertSelectionButton.IconSizeOffset = 0;
+            this.InvertSelectionButton.Location = new System.Drawing.Point(763, 506);
+            this.InvertSelectionButton.Name = "InvertSelectionButton";
+            this.InvertSelectionButton.Size = new System.Drawing.Size(93, 29);
+            this.InvertSelectionButton.TabIndex = 4;
+            this.InvertSelectionButton.UseVisualStyleBackColor = true;
+            this.InvertSelectionButton.Click += new System.EventHandler(this.InvertSelectionButton_Click);
             // 
-            // progressBar1
+            // SelectNonebutton
             // 
-            this.progressBar1.Location = new System.Drawing.Point(285, 506);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(613, 29);
-            this.progressBar1.TabIndex = 8;
+            this.SelectNonebutton.Content = "모두 선택 취소";
+            this.SelectNonebutton.Icon = global::PDFIndexer.Properties.Resources.DeselectIcon;
+            this.SelectNonebutton.IconSizeOffset = 0;
+            this.SelectNonebutton.Location = new System.Drawing.Point(634, 506);
+            this.SelectNonebutton.Name = "SelectNonebutton";
+            this.SelectNonebutton.Size = new System.Drawing.Size(123, 29);
+            this.SelectNonebutton.TabIndex = 3;
+            this.SelectNonebutton.UseVisualStyleBackColor = true;
+            this.SelectNonebutton.Click += new System.EventHandler(this.SelectNonebutton_Click);
+            // 
+            // SelectAllButton
+            // 
+            this.SelectAllButton.Content = "모두 선택";
+            this.SelectAllButton.Icon = global::PDFIndexer.Properties.Resources.SelectAllIcon;
+            this.SelectAllButton.IconSizeOffset = 0;
+            this.SelectAllButton.Location = new System.Drawing.Point(531, 506);
+            this.SelectAllButton.Name = "SelectAllButton";
+            this.SelectAllButton.Size = new System.Drawing.Size(97, 29);
+            this.SelectAllButton.TabIndex = 3;
+            this.SelectAllButton.UseVisualStyleBackColor = true;
+            this.SelectAllButton.Click += new System.EventHandler(this.SelectAllButton_Click);
             // 
             // DuplicateManagerView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(991, 547);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.ReloadButton);
+            this.Controls.Add(this.SelectDeleteButton);
+            this.Controls.Add(this.InvertSelectionButton);
+            this.Controls.Add(this.SelectNonebutton);
+            this.Controls.Add(this.SelectAllButton);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.SelectedTotalSizeLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.flowLayoutPanel1);
             this.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = global::PDFIndexer.Properties.Resources.PDFIndexerIcon;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "DuplicateManagerView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Duplicate Manager";
             this.Load += new System.EventHandler(this.DuplicateManagerView_Load);
             this.ResumeLayout(false);
@@ -147,15 +168,14 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label SelectedTotalSizeLabel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private IconTextButtonControl SelectAllButton;
+        private IconTextButtonControl SelectNonebutton;
+        private IconTextButtonControl InvertSelectionButton;
+        private IconTextButtonControl SelectDeleteButton;
+        private IconTextButtonControl ReloadButton;
     }
 }

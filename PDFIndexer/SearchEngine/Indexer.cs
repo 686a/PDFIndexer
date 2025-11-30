@@ -1,17 +1,13 @@
-﻿using LiteDB;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
-using PDFIndexer.BackgroudTask;
+using Lucene.Net.Search;
 using PDFIndexer.BackgroundTask;
 using PDFIndexer.Journal;
-using PDFIndexer.Models;
+using PDFIndexer.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
 
@@ -20,6 +16,10 @@ namespace PDFIndexer.SearchEngine
     internal class Indexer
     {
         private LuceneProvider Provider;
+
+        public delegate void IndexProgressUpdate(float progress);
+
+        public event IndexProgressUpdate OnIndexProgressUpdate;
 
         public Indexer(LuceneProvider provider)
         {
@@ -34,14 +34,21 @@ namespace PDFIndexer.SearchEngine
         {
             Logger.Write(JournalLevel.Info, $"IndexPdfs 요청 - 요청된 PDF 수:{pdfs.Length}");
 
+            float progress = 0f;
+
+            Provider.MarkDoneFirstIndex();
             var writer = Provider.GetIndexWriter();
 
             var dbCollection = DBContext.DB.GetCollection<IndexedDocument>("indexed");
 
-            foreach (var path in pdfs)
+            OnIndexProgressUpdate?.Invoke(progress);
+
+            for (int i = 0;  i < pdfs.Length; i++)
             {
                 // 프로그램 종료 체크
                 if (Program.Disposing) return;
+
+                var path = pdfs[i];
 
                 var filename = (path.Split('\\').LastOrDefault() ?? path).Replace(".pdf", "");
 
@@ -50,6 +57,14 @@ namespace PDFIndexer.SearchEngine
 
                 using (PdfDocument pdf = PdfDocument.Open(path))
                 {
+                    // 기존 인덱스 제거
+                    BooleanQuery deleteQuery = new BooleanQuery
+                    {
+                        { new TermQuery(new Term("path", path)), Occur.MUST },
+                        { new TermQuery(new Term("isOCRData", "0")), Occur.MUST },
+                    };
+                    writer.DeleteDocuments(deleteQuery);
+
                     // 페이지 별로 인덱스
                     var pages = pdf.GetPages();
                     foreach (var page in pages)
@@ -57,14 +72,14 @@ namespace PDFIndexer.SearchEngine
                         // 프로그램 종료 체크
                         if (Program.Disposing) return;
 
+                        bool isLastPage = page.Number == pdf.NumberOfPages;
+
                         // 기본 메타데이터
                         Document doc = new Document
                         {
                             new TextField("title", filename, Field.Store.YES),
                             new StringField("path", path, Field.Store.YES),
                             new Int32Field("page", page.Number, Field.Store.YES),
-                            new StringField("md5", hash, Field.Store.YES),
-                            new StringField("lastModified", lastModified.ToString(), Field.Store.YES),
                             new StringField("isOCRData", "0", Field.Store.YES),
                         };
 
@@ -73,6 +88,7 @@ namespace PDFIndexer.SearchEngine
                         doc.Add(new TextField("content", content, Field.Store.YES));
 
                         // DB 업데이트
+                        dbCollection.Delete($"{path}//{page.Number}");
                         var dbItem = new IndexedDocument
                         {
                             _id = $"{path}//{page.Number}",
@@ -84,15 +100,27 @@ namespace PDFIndexer.SearchEngine
                         };
                         dbCollection.Upsert(dbItem);
 
+                        // 마지막 페이지 이후 DB 항목 제거
+                        if (isLastPage)
+                        {
+                            dbCollection.DeleteMany(
+                                LiteDB.Query.And(
+                                    LiteDB.Query.EQ("Path", path),
+                                    LiteDB.Query.GT("Page", page.Number)));
+                        }
+
                         // 인덱스 추가
                         writer.AddDocument(doc);
 
                         // 이미지 OCR task enqueue
-                        TaskManager.Enqueue(new OCRTask(path, page.Number));
+                        TaskManager.Enqueue(new OCRTask(path, page.Number, isLastPage));
                     }
 
                     // Logger.Write($"IndexPdfs - Index done: {path} with {pages.Count()} pages");
                 }
+
+                progress = (float)(i + 1) / pdfs.Length;
+                OnIndexProgressUpdate(progress);
             }
 
             if (Program.Disposing) return;
@@ -102,6 +130,35 @@ namespace PDFIndexer.SearchEngine
             Provider.MarkAsDirty();
 
             Logger.Write(JournalLevel.Info, "IndexPdfs 완료.");
+        }
+
+        public void RemoveIndex(string path, int page)
+        {
+            var writer = Provider.GetIndexWriter();
+
+            BooleanQuery deleteQuery = new BooleanQuery
+            {
+                { new TermQuery(new Term("path", path)), Occur.MUST },
+                { new TermQuery(new Term("page", page.ToString())), Occur.MUST },
+            };
+            writer.DeleteDocuments(deleteQuery);
+            writer.Commit();
+
+            var dbCollection = DBContext.DB.GetCollection<IndexedDocument>("indexed");
+            dbCollection.DeleteMany(
+                LiteDB.Query.And(
+                    LiteDB.Query.EQ("Path", path),
+                    LiteDB.Query.GT("Page", page)));
+        }
+
+        public void RemoveIndexAllPages(string path)
+        {
+            var writer = Provider.GetIndexWriter();
+            writer.DeleteDocuments(new TermQuery(new Term("path", path)));
+            writer.Commit();
+
+            var dbCollection = DBContext.DB.GetCollection<IndexedDocument>("indexed");
+            dbCollection.DeleteMany(LiteDB.Query.EQ("Path", path));
         }
 
         public void CleanupIndexes()

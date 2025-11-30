@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +12,8 @@ namespace PDFIndexerOCR
 {
     internal class Program
     {
+        private static readonly Mutex Mutex = new Mutex(initiallyOwned: false, name: "com.github.686a.PDFIndexer.OCR");
+
         private static bool SingleMode = false;
 
         private static string Path;
@@ -32,10 +32,14 @@ namespace PDFIndexerOCR
 
             if (!SingleMode)
             {
+                if (!Mutex.WaitOne(TimeSpan.Zero, true)) return;
+
                 MainProcessWatcher();
 
                 PipeServerThread = new Thread(StartPipeServer);
                 PipeServerThread.Start();
+
+                Mutex.ReleaseMutex();
             } else
             {
                 OCRSingle();
@@ -49,7 +53,8 @@ namespace PDFIndexerOCR
             for (int i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
-                var nextArg = args[i + 1];
+                string nextArg = null;
+                if (args.Length > i + 1) nextArg = args[i + 1];
 
                 switch (arg)
                 {
@@ -67,7 +72,7 @@ namespace PDFIndexerOCR
                         switch (nextArg.ToLower())
                         {
                             case "high":
-                                priority = ProcessPriorityClass.AboveNormal;
+                                priority = ProcessPriorityClass.High;
                                 break;
                             case "normal":
                                 priority = ProcessPriorityClass.Normal;
@@ -167,7 +172,12 @@ namespace PDFIndexerOCR
                                 var response = PipeResponse.ToJSON(res);
 
                                 stopwatch.Stop();
-                                Console.WriteLine($"[OCR] Result: {result.Text.Substring(0, 20).Replace("\n", " ")}{(result.Text.Length > 20 ? "..." : "")} (length: {result.Text.Length})");
+                                string preview = result.Text.Replace("\n", " ");
+                                if (preview.Length > 30)
+                                {
+                                    preview = $"{preview.Substring(0, 30)}{(result.Text.Length > 30 ? "..." : "")}";
+                                }
+                                Console.WriteLine($"[OCR] Result: {preview} (length: {result.Text.Length})");
                                 Console.WriteLine($"[OCR] Elapsed: {stopwatch.Elapsed}");
 
                                 writer.WriteLine(response);

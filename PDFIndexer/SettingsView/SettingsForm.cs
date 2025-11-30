@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace PDFIndexer.SettingsView
@@ -37,13 +34,27 @@ namespace PDFIndexer.SettingsView
 
         public void LoadSettings()
         {
+            SettingsLoaded = false;
+
             BasePathTextBox.Text = AppSettings.BasePath;
 
             OCREnabledCheckBox.Checked = AppSettings.OCREnabled;
             OCREngineComboBox.SelectedIndex = AppSettings.OCREngine;
             OCRCPUPriorityComboBox.SelectedIndex = AppSettings.OCRCPUPriority;
 
-            // TODO: AutorunCheckBox.Checked
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
+                if (key != null)
+                {
+                    var value = key.GetValue("PDFIndexer");
+                    AutorunCheckBox.Checked = value != null;
+                }
+                else AutorunCheckBox.Checked = false;
+            } catch
+            {
+                AutorunCheckBox.Checked = false;
+            }
             CloseToTrayCheckBox.Checked = AppSettings.CloseToTray;
             MinimizeToTrayCheckBox.Checked = AppSettings.MinimizeToTray;
 
@@ -119,7 +130,29 @@ namespace PDFIndexer.SettingsView
         {
             if (!SettingsLoaded) return;
 
-            // TODO: Registrate auto start
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = Assembly.GetExecutingAssembly().Location,
+                Arguments = "--install-startup",
+                Verb = "runas",
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+            };
+
+            if (!AutorunCheckBox.Checked)
+            {
+                startInfo.Arguments = "--uninstall-startup";
+            }
+
+            try
+            {
+                var process = Process.Start(startInfo);
+                process.WaitForExit();
+            }
+            catch (Win32Exception) { }
+
+            LoadSettings();
         }
 
         private void CloseToTrayCheckBox_CheckedChanged(object sender, EventArgs e)

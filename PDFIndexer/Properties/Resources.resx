@@ -130,6 +130,15 @@
   <data name="DatabaseUploadIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\database_upload_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DeleteIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeselectIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deselect_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MoveSelectionRightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\move_selection_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="OpenInBrowserIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\open_in_browser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -145,8 +154,14 @@
   <data name="PDFIndexerIcon-Tiny" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PDFIndexer-Tiny.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="RefreshIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refresh_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="SearchIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\search_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SelectAllIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\select_all_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SettingsIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\settings_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PDFIndexer.BackgroundTask
+﻿namespace PDFIndexer.BackgroundTask
 {
     internal abstract class AbstractTask
     {
+        /// <summary>
+        /// Human-readable한 작업 이름.
+        /// 예: OCR, 인덱스, 인덱스 삭제 등
+        /// </summary>
+        public abstract string Name { get; }
+        /// <summary>
+        /// Description은 nullable임. 반드시 사용 전 확인할 것
+        /// </summary>
+        public abstract string Description { get; }
+
         public abstract void Run();
 
         /// <summary>

@@ -1,11 +1,6 @@
 ﻿using Lucene.Net.Documents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PDFIndexer
+namespace PDFIndexer.Models
 {
     public class SearchItem
     {

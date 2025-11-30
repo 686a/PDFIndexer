@@ -1,18 +1,13 @@
-﻿using PDFIndexer.BackgroundTask;
+﻿using Microsoft.Win32;
+using PDFIndexer.BackgroundTask;
 using PDFIndexer.Journal;
 using PDFIndexer.SearchEngine;
 using PDFIndexer.Services;
 using PDFIndexer.SetupWizard;
-using PDFIndexerShared;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Pipes;
-using System.Linq;
+using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PDFIndexer
@@ -35,8 +30,32 @@ namespace PDFIndexer
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            bool backgroundLaunch = false;
+            if (args.Length > 0)
+            {
+                foreach (var arg in args)
+                {
+                    if (arg.ToLower() == "-b" || arg.ToLower() == "--background")
+                    {
+                        backgroundLaunch = true;
+                    }
+
+                    if (arg.ToLower() == "--install-startup")
+                    {
+                        InstallStartup(true);
+                        return;
+                    }
+
+                    if (arg.ToLower() == "--uninstall-startup")
+                    {
+                        InstallStartup(false);
+                        return;
+                    }
+                }
+            }
+
             // 단일 인스턴스 허용
             if (!Mutex.WaitOne(TimeSpan.Zero, true)) return;
 
@@ -64,7 +83,8 @@ namespace PDFIndexer
 
             // 베이스 디렉토리 생성
             string appDataPath = Path.Combine(AppSettings.BasePath, ".pdfindexer");
-            Directory.CreateDirectory(appDataPath);
+            var directory = Directory.CreateDirectory(appDataPath);
+            directory.Attributes |= FileAttributes.Hidden;
 
             // 작업 관리자
             TaskManager = new TaskManager();
@@ -83,7 +103,7 @@ namespace PDFIndexer
             FileWatcher = new FileWatcher(AppSettings.BasePath);
 
             Logger.Write($"메인 UI 실행");
-            Application.Run(new Form1(LuceneProvider));
+            Application.Run(new MainForm(LuceneProvider, backgroundLaunch));
 
             // 정리
             Cleanup();
@@ -123,6 +143,23 @@ namespace PDFIndexer
             Logger.Write("프로세스 정리 완료");
 
             Mutex.ReleaseMutex();
+        }
+
+        private static void InstallStartup(bool install)
+        {
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                if (key != null)
+                {
+                    if (install)
+                        key.SetValue("PDFIndexer", $"\"{Assembly.GetExecutingAssembly().Location}\" -b");
+                    else
+                        key.DeleteValue("PDFIndexer");
+
+                    key.Close();
+                }
+            } catch { }
         }
     }
 }

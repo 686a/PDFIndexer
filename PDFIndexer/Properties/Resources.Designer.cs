@@ -103,6 +103,36 @@ namespace PDFIndexer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DeleteIcon {
+            get {
+                object obj = ResourceManager.GetObject("DeleteIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DeselectIcon {
+            get {
+                object obj = ResourceManager.GetObject("DeselectIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MoveSelectionRightIcon {
+            get {
+                object obj = ResourceManager.GetObject("MoveSelectionRightIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap OpenInBrowserIcon {
             get {
                 object obj = ResourceManager.GetObject("OpenInBrowserIcon", resourceCulture);
@@ -153,9 +183,29 @@ namespace PDFIndexer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap RefreshIcon {
+            get {
+                object obj = ResourceManager.GetObject("RefreshIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap SearchIcon {
             get {
                 object obj = ResourceManager.GetObject("SearchIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SelectAllIcon {
+            get {
+                object obj = ResourceManager.GetObject("SelectAllIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

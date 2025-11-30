@@ -4,16 +4,16 @@ using PDFIndexer.Services;
 
 namespace PDFIndexer.BackgroudTask
 {
-    internal class IndexTask : AbstractTask
+    internal class RemoveIndexTask : AbstractTask
     {
         private static readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
-        public override string Name => "인덱스";
+        public override string Name => "인덱스 삭제";
         public override string Description => $"{Path.Replace(AppSettings.BasePath, "")}";
 
         private string Path;
 
-        public IndexTask( string path)
+        public RemoveIndexTask(string path)
         {
             Path = path;
         }
@@ -21,7 +21,7 @@ namespace PDFIndexer.BackgroudTask
         public override void Run()
         {
             new Indexer(SearchEngineContext.Provider)
-                .IndexPdfs(new string[] { Path });
+                .RemoveIndexAllPages(Path);
         }
 
         public override string GetTaskHash()

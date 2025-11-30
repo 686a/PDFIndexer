@@ -37,6 +37,7 @@
             this.logListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ResetHintButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -63,6 +64,7 @@
             this.flowLayoutPanel1.Controls.Add(this.logLevelComboBox);
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.ResetSettingsButton);
+            this.flowLayoutPanel1.Controls.Add(this.ResetHintButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 4);
@@ -135,6 +137,17 @@
             this.columnHeader2.Text = "Message";
             this.columnHeader2.Width = 100;
             // 
+            // ResetHintButton
+            // 
+            this.ResetHintButton.AutoSize = true;
+            this.ResetHintButton.Location = new System.Drawing.Point(317, 3);
+            this.ResetHintButton.Name = "ResetHintButton";
+            this.ResetHintButton.Size = new System.Drawing.Size(81, 25);
+            this.ResetHintButton.TabIndex = 4;
+            this.ResetHintButton.Text = "힌트 초기화";
+            this.ResetHintButton.UseVisualStyleBackColor = true;
+            this.ResetHintButton.Click += new System.EventHandler(this.ResetHintButton_Click);
+            // 
             // DebugForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -165,5 +178,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button ResetSettingsButton;
+        private System.Windows.Forms.Button ResetHintButton;
     }
 }

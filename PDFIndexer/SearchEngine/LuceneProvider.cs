@@ -1,17 +1,12 @@
 ﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Cjk;
-using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 using PDFIndexer.Journal;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LuceneDirectory = Lucene.Net.Store.Directory;
 
 namespace PDFIndexer.SearchEngine
@@ -33,6 +28,9 @@ namespace PDFIndexer.SearchEngine
 
         private static bool _Ready = false;
         public static bool Ready { get { return _Ready; } }
+
+        private static bool _NotIndexedYet = true;
+        public static bool NotIndexedYet { get { return _NotIndexedYet; } }
 
         /// <summary>
         /// Indexer가 준비될때 발생합니다. 이벤트가 Main Thread에서 발생하지 않을 수도 있습니다.
@@ -96,6 +94,8 @@ namespace PDFIndexer.SearchEngine
 
             Logger.Write(JournalLevel.Info, "LuceneProvider 초기화");
             SetReadyState(false);
+
+            _NotIndexedYet = !File.Exists(Path.Combine(BasePath, ".indexed"));
 
             IndexDirectory = FSDirectory.Open(Path.Combine(BasePath, "index"));
             Analyzer = new CJKAnalyzer(luceneVersion);
@@ -184,6 +184,15 @@ namespace PDFIndexer.SearchEngine
         public void MarkAsDirty()
         {
             SearcherManager.MaybeRefresh();
+        }
+
+        public void MarkDoneFirstIndex()
+        {
+            var path = Path.Combine(BasePath, ".indexed");
+            if (File.Exists(path)) return;
+
+            File.Create(path);
+            _NotIndexedYet = true;
         }
     }
 }

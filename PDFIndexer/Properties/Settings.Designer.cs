@@ -122,12 +122,12 @@ namespace PDFIndexer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool NotifiedTrayIcon {
+        public bool HintTrayIcon {
             get {
-                return ((bool)(this["NotifiedTrayIcon"]));
+                return ((bool)(this["HintTrayIcon"]));
             }
             set {
-                this["NotifiedTrayIcon"] = value;
+                this["HintTrayIcon"] = value;
             }
         }
     }

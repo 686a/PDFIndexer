@@ -56,9 +56,10 @@
             this.ClientSize = new System.Drawing.Size(800, 562);
             this.Controls.Add(this.webView);
             this.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Icon = global::PDFIndexer.Properties.Resources.PDFIndexerIcon;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "PdfWebView";
-            this.Text = "WebView";
+            this.Text = "PDF Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.webView)).EndInit();
             this.ResumeLayout(false);
 

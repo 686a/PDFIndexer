@@ -1,23 +1,18 @@
-﻿using LiteDB;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
+using Lucene.Net.Index;
+using Lucene.Net.Search;
 using PDFIndexer.Journal;
-using PDFIndexer.Models;
-using PDFIndexer.SearchEngine;
+using PDFIndexer.Models.Database;
 using PDFIndexer.Services;
 using PDFIndexerShared;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using UglyToad.PdfPig;
-using static Lucene.Net.Util.Packed.PackedInt32s;
 
 namespace PDFIndexer.BackgroundTask
 {
@@ -33,16 +28,21 @@ namespace PDFIndexer.BackgroundTask
         private static StreamWriter Writer;
         private static Queue<OCRTask> InternalQueue = new Queue<OCRTask>(); // 작업 내부 큐
 
+        public override string Name => "OCR";
+        public override string Description => $"{Path.Replace(AppSettings.BasePath, "").Replace(System.IO.Path.DirectorySeparatorChar, '/')} - {Page} 페이지";
+
         private string Path;
         private int Page;
+        private bool IsLastPage = false;
         private Queue<byte[]> Images;
         private bool Done = false;
         private bool FailedOnce = false;
 
-        public OCRTask(string path, int page)
+        public OCRTask(string path, int page, bool isLastPage = false)
         {
             Path = path;
             Page = page;
+            IsLastPage = isLastPage;
             Images = new Queue<byte[]> { };
 
             if (!Program.Disposing) Setup();
@@ -50,6 +50,8 @@ namespace PDFIndexer.BackgroundTask
 
         public static void Setup()
         {
+            if (!AppSettings.OCREnabled) return;
+
             if (OCRProcess != null) return;
             //if (!OCRProcess.HasExited) return;
 
@@ -99,6 +101,8 @@ namespace PDFIndexer.BackgroundTask
             {
                 while (!StopSignalReceived)
                 {
+                    if (!AppSettings.OCREnabled) break;
+
                     OCRTask task = null;
                     var Client = new NamedPipeClientStream(".", "PDFIndexerOCR", PipeDirection.InOut);
 
@@ -121,16 +125,22 @@ namespace PDFIndexer.BackgroundTask
 
                                 // 큐 Empty 패널티 부여
                                 // 큐가 비었다면 다음에도 비어있을 가능성이 높음.
-                                //Thread.Sleep(30 * 1000);
+#if DEBUG
                                 Thread.Sleep(1000);
+#else
+                                Thread.Sleep(30 * 1000);
+#endif
 
                                 continue;
                             }
 
+                            // OCR 미활성화
+                            if (!AppSettings.OCREnabled) continue;
+
                             Logger.Write($"[OCRTask-IPC] {task.Path}/{task.Page} Start");
 
                             var dbCollection = DBContext.DB.GetCollection<IndexedDocument>("indexed");
-                            var dbItem = dbCollection.FindOne(Query.And(Query.EQ("Path", task.Path), Query.EQ("Page", task.Page)));
+                            var dbItem = dbCollection.FindOne(LiteDB.Query.And(LiteDB.Query.EQ("Path", task.Path), LiteDB.Query.EQ("Page", task.Page)));
                             if (dbItem == null)
                             {
                                 task.Done = true;
@@ -175,6 +185,20 @@ namespace PDFIndexer.BackgroundTask
                                     Logger.Write($"[OCRTask-IPC] OCR Done {task.Path}/{task.Page} : Length {result.Length}");
                                 }
 
+                                var indexWriter = SearchEngineContext.Provider.GetIndexWriter();
+
+                                // 기존 인덱스 제거
+                                BooleanQuery deleteQuery = new BooleanQuery
+                                {
+                                    { new TermQuery(new Term("path", task.Path)), Occur.MUST },
+                                    { new TermQuery(new Term("isOCRData", "1")), Occur.MUST },
+                                };
+                                if (task.IsLastPage)
+                                    deleteQuery.Add(NumericRangeQuery.NewInt32Range("page", task.Page, null, true, false), Occur.MUST);
+                                else
+                                    deleteQuery.Add(new TermQuery(new Term("page", task.Page.ToString())), Occur.MUST);
+                                indexWriter.DeleteDocuments(deleteQuery);
+
                                 // 인덱스 저장
                                 var filename = (task.Path.Split('\\').LastOrDefault() ?? task.Path).Replace(".pdf", "");
                                 Document doc = new Document
@@ -186,7 +210,6 @@ namespace PDFIndexer.BackgroundTask
                                     new StringField("isOCRData", "1", Field.Store.YES),
                                 };
 
-                                var indexWriter = SearchEngineContext.Provider.GetIndexWriter();
                                 indexWriter.AddDocument(doc);
                                 indexWriter.Commit();
                                 SearchEngineContext.Provider.MarkAsDirty();
@@ -300,6 +323,8 @@ namespace PDFIndexer.BackgroundTask
             // 매 페이지마다 디스크 IO 작업이 일어나지만,
             // 메모리 절약을 우선으로 페이지 단위로 읽음
 
+            if (!AppSettings.OCREnabled) return;
+
             Logger.Write($"[OCRTask] {Path}/{Page} Start");
 
             var waitThread = new Thread(() =>
@@ -316,7 +341,7 @@ namespace PDFIndexer.BackgroundTask
                 {
                     image.TryGetPng(out var bytes);
                     // 최소 이미지 크기
-                    if (bytes.Length >= 1024)
+                    if (bytes != null && bytes.Length >= 1024)
                     {
                         Images.Enqueue(bytes);
                     }
@@ -333,7 +358,7 @@ namespace PDFIndexer.BackgroundTask
             else
             {
                 var dbCollection = DBContext.DB.GetCollection<IndexedDocument>("indexed");
-                var dbItem = dbCollection.FindOne(Query.And(Query.EQ("Path", Path), Query.EQ("Page", Page)));
+                var dbItem = dbCollection.FindOne(LiteDB.Query.And(LiteDB.Query.EQ("Path", Path), LiteDB.Query.EQ("Page", Page)));
                 if (dbItem != null)
                 {
                     dbItem.OCRDone = true;

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PDFIndexer.Journal;
 
@@ -86,6 +79,12 @@ namespace PDFIndexer
 
             // 이벤트 리스닝
             Logger.OnMessage += Logger_OnMessage;
+        }
+
+        private void ResetHintButton_Click(object sender, EventArgs e)
+        {
+            AppSettings.HintTrayIcon = false;
+            AppSettings.Save();
         }
     }
 }

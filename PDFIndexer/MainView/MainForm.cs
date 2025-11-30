@@ -1,37 +1,21 @@
-﻿using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.QueryParsers.Classic;
-using Lucene.Net.Search;
-using Lucene.Net.Store;
-using Lucene.Net.Util;
-using Microsoft.Web.WebView2.Core;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using UglyToad.PdfPig;
-using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
-using PDFIndexer.Journal;
-using static Lucene.Net.Util.Fst.Builder;
-using static Lucene.Net.Util.Packed.PackedInt32s;
-using Directory = System.IO.Directory;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
+using PDFIndexer.BackgroudTask;
+using PDFIndexer.BackgroundTask;
 using PDFIndexer.SearchEngine;
 using PDFIndexer.Services;
 using PDFIndexer.SettingsView;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Directory = System.IO.Directory;
 
 namespace PDFIndexer
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private static readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
@@ -56,12 +40,15 @@ namespace PDFIndexer
             {
                 _IsIndexing = value;
 
-                //listBox1.Enabled = !value;
-                OpenInNewWindowButton.Enabled = !value;
-                IndexAllButton.Enabled = !value;
-                QueryInputBox.Enabled = !value;
+                foreach (Control control in IndexLockControls)
+                {
+                    control.Enabled = !value;
+                }
             }
         }
+
+        // 인덱스 동안 잠굴 컨트롤 목록
+        private Control[] IndexLockControls;
 
         PdfWebView pdfWebView;
         bool _WebViewIsDetached = false;
@@ -81,11 +68,17 @@ namespace PDFIndexer
         // true로 설정 시 CloseToTray 설정을 무시하고 창을 닫을 수 있도록 함.
         private bool forceQuit = false;
 
-        public Form1(LuceneProvider provider)
+        private bool BackgroundMode = false;
+
+        private bool ProgressPanelInUse = false;
+
+        public MainForm(LuceneProvider provider, bool backgroundMode = false)
         {
 #if DEBUG
             new DebugForm().Show();
 #endif
+
+            BackgroundMode = backgroundMode;
 
             // TODO: Asynchronous loading
             Indexer = new Indexer(Provider);
@@ -93,10 +86,32 @@ namespace PDFIndexer
 
             InitializeComponent();
 
+            if (!backgroundMode) WindowState = FormWindowState.Normal;
+
             noFileLabel.Location = new Point(
                 (WebViewVirtualPanel.ClientSize.Width / 2) - (noFileLabel.ClientSize.Width / 2),
                 (WebViewVirtualPanel.ClientSize.Height / 2) - (noFileLabel.ClientSize.Height / 2)
             );
+
+            // 인덱스 동안 잠굴 컨트롤 목록
+            IndexLockControls = new Control[]
+            {
+                // 최상단
+                QueryInputBox,
+
+                // 좌측
+                SearchResultPanel,
+
+                // 우측-상단
+                OpenInNewWindowButton,
+                DetachButton,
+
+                // 우측-하단
+                SettingsButton,
+                IndexAllButton,
+                IndexMissingButton,
+                DuplicateManagerButton,
+            };
 
             //BackColor = Color.White;
             //TransparencyKey = Color.White;
@@ -108,6 +123,11 @@ namespace PDFIndexer
             duplicateManagerView = new DuplicateManagerView();
 
             //Indexer.CleanupIndexes(indexer);
+
+            if (!LuceneProvider.NotIndexedYet)
+            {
+                TaskManager.Enqueue(new CheckMissingTask());
+            }
         }
 
         #region 웹뷰 관련
@@ -126,7 +146,7 @@ namespace PDFIndexer
 
         private void DetachWebView()
         {
-            Controls.Remove(pdfWebView);
+            WebViewVirtualPanel.Controls.Remove(pdfWebView);
             pdfWebView.TopLevel = true;
             pdfWebView.FormBorderStyle = FormBorderStyle.Sizable;
 
@@ -187,11 +207,48 @@ namespace PDFIndexer
         {
             IsIndexing = true;
 
+            QueryInputBox.Text = "";
+
             await Task.Run(() =>
             {
                 pdfs.Clear();
                 FindAllPdfFiles(basePath, true);
+
+                ProgressPanelInUse = true;
+                ProgressPanel.BeginInvoke((MethodInvoker)delegate
+                {
+                    ProgressPanel.Visible = true;
+                });
+                Indexer.OnIndexProgressUpdate += (progress) =>
+                {
+                    float percent = (float)Math.Round(progress * 100, 1);
+
+                    IndexProgressTextLabel.BeginInvoke((MethodInvoker)delegate
+                    {
+                        IndexProgressTextLabel.Text = "인덱싱";
+                    });
+
+                    IndexProgressBar.BeginInvoke((MethodInvoker)delegate
+                    {
+                        IndexProgressBar.Style = ProgressBarStyle.Blocks;
+                        IndexProgressBar.Value = (int)(percent * 10);
+                    });
+
+                    IndexProgressLabel.BeginInvoke((MethodInvoker)delegate
+                    {
+                        IndexProgressLabel.Text = $"{percent}%";
+                    });
+                };
+
                 Indexer.IndexPdfs(pdfs.ToArray());
+
+                ProgressPanelInUse = false;
+                AutohideProgressPanel();
+
+                new ToastContentBuilder()
+                    .AddText("인덱싱 완료")
+                    .AddText($"{pdfs.Count}개 문서가 인덱싱되었습니다.\n백그라운드 작업 중에도 여전히 검색을 시작할 수 있습니다.")
+                    .Show();
             });
 
             IsIndexing = false;
@@ -202,7 +259,7 @@ namespace PDFIndexer
         private void QueryInputBox_TextChanged(object sender, EventArgs e)
         {
             // 검색 쿼리 입력 시 자동 검색
-            flowLayoutPanel1.Controls.Clear();
+            SearchResultPanel.Controls.Clear();
 
             var query = QueryInputBox.Text;
             var topDocs = Searcher.SearchQuery(query, 50);
@@ -212,9 +269,9 @@ namespace PDFIndexer
             foreach (var group in groups)
             {
                 string relativePath = group.Path.Replace($"{basePath}\\", "").Replace($"\\{group.Title}.pdf", "");
-                var searchItem = new SearchItemControl(group.Title, group.Path, relativePath, group.MatchPages, group, flowLayoutPanel1);
+                var searchItem = new SearchItemControl(group.Title, group.Path, relativePath, group.MatchPages, group, SearchResultPanel);
                 searchItem.OnItemClick += SearchItem_OnItemClick;
-                flowLayoutPanel1.Controls.Add(searchItem);
+                SearchResultPanel.Controls.Add(searchItem);
             }
         }
 
@@ -262,21 +319,78 @@ namespace PDFIndexer
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
+            TaskManager.OnTaskStart += (name, description) =>
+            {
+                if (!Visible) return;
+
+                MainStatusStrip.BeginInvoke((MethodInvoker)delegate
+                {
+                    BackgroundTaskStatusTextLabel.Text = $"백그라운드 작업 {TaskManager.GetRemainTasks()}개 남음 :";
+
+                    if (!BackgroundTaskStatusLabel.Visible)
+                        BackgroundTaskStatusLabel.Visible = true;
+
+                    if (description != null)
+                        BackgroundTaskStatusLabel.Text = $"[{name}] {description}";
+                    else
+                        BackgroundTaskStatusLabel.Text = $"{name}";
+                });
+
+                BeginInvoke((MethodInvoker)delegate
+                {
+                    TrayIcon.Text = $"PDFIndexer - 백그라운드 작업 {TaskManager.GetRemainTasks()}개 남음";
+                });
+            };
+
+            TaskManager.OnTaskDone += () =>
+            {
+                if (!Visible) return;
+
+                if (BackgroundTaskStatusTextLabel.Text != "준비")
+                {
+                    MainStatusStrip.BeginInvoke((MethodInvoker)delegate
+                    {
+                        BackgroundTaskStatusTextLabel.Text = "준비";
+                    });
+                }
+
+                if (BackgroundTaskStatusLabel.Visible)
+                {
+                    MainStatusStrip.BeginInvoke((MethodInvoker)delegate
+                    {
+                        BackgroundTaskStatusLabel.Visible = false;
+                    });
+                }
+
+                if (TrayIcon.Text != "PDFIndexer")
+                {
+                    BeginInvoke((MethodInvoker)delegate
+                    {
+                        TrayIcon.Text = $"PDFIndexer";
+                    });
+                }
+
+                new ToastContentBuilder()
+                    .AddText("백그라운드 작업 완료")
+                    .AddText($"{TaskManager.TasksDone}개 작업이 완료되었습니다.")
+                    .Show();
+            };
+
+            IndexProgressTextLabel.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
             LuceneProvider.OnReady += () =>
             {
                 if (Visible)
                 {
-                    label1.BeginInvoke((MethodInvoker)delegate
+                    IndexProgressTextLabel.BeginInvoke((MethodInvoker)delegate
                     {
-                        label1.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
+                        IndexProgressTextLabel.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
                     });
                 }
             };
 
             await Task.Run(() => Thread.Sleep(100));
 
-            if (!LuceneProvider.Ready)
+            if (LuceneProvider.NotIndexedYet)
             {
                 var result = MessageBox.Show("인덱싱이 없습니다.\n\n인덱싱을 지금 시작할까요?", "환영합니다", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
@@ -295,7 +409,7 @@ namespace PDFIndexer
         {
             if (WindowState == FormWindowState.Minimized && AppSettings.MinimizeToTray)
             {
-                Hide();
+                HideMainUI();
             }
 
             if (!WebViewIsDetached)
@@ -309,6 +423,23 @@ namespace PDFIndexer
             );
         }
 
+        private void HideMainUI()
+        {
+            WindowState = FormWindowState.Minimized;
+            Hide();
+
+            if (!AppSettings.HintTrayIcon)
+            {
+                new ToastContentBuilder()
+                    .AddText("PDFIndexer가 백그라운드에서 실행중입니다")
+                    .AddText("작업표시줄의 트레이 아이콘에서 확인할 수 있습니다.")
+                    .Show();
+
+                AppSettings.HintTrayIcon = true;
+                AppSettings.Save();
+            }
+        }
+
         private void ShowMainUIFromMinimize()
         {
             if (!Visible)
@@ -320,6 +451,21 @@ namespace PDFIndexer
             {
                 Activate();
             }
+        }
+
+        private void AutohideProgressPanel()
+        {
+            new Thread(() =>
+            {
+                Thread.Sleep(10 * 1000);
+                if (Visible && !ProgressPanelInUse)
+                {
+                    ProgressPanel.BeginInvoke((MethodInvoker)delegate
+                    {
+                        ProgressPanel.Visible = false;
+                    });
+                }
+            }).Start();
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -356,9 +502,13 @@ namespace PDFIndexer
             if (!forceQuit && AppSettings.CloseToTray)
             {
                 e.Cancel = true;
-                WindowState = FormWindowState.Minimized;
-                Hide();
+                HideMainUI();
             }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            if (BackgroundMode) HideMainUI();
         }
     }
 }

@@ -4,11 +4,7 @@ using Sdcb.PaddleOCR;
 using Sdcb.PaddleOCR.Models;
 using Sdcb.PaddleOCR.Models.Local;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace PDFIndexerOCR
 {
@@ -26,7 +22,23 @@ namespace PDFIndexerOCR
 
         public Paddle()
         {
-            device = PaddleDevice.Onnx(cpuMathThreadCount: 4, glogEnabled: false);
+            int useCpuThreads = 4;
+            switch (Process.GetCurrentProcess().PriorityClass)
+            {
+                case ProcessPriorityClass.Idle:
+                    useCpuThreads = 4;
+                    break;
+                case ProcessPriorityClass.Normal:
+                case ProcessPriorityClass.BelowNormal:
+                    useCpuThreads = Environment.ProcessorCount / 2;
+                    break;
+                case ProcessPriorityClass.AboveNormal:
+                case ProcessPriorityClass.High:
+                case ProcessPriorityClass.RealTime:
+                    useCpuThreads = 0;
+                    break;
+            }
+            device = PaddleDevice.Onnx(cpuMathThreadCount: useCpuThreads, glogEnabled: false);
         }
 
         public PaddleOcrResult OCR(byte[] image)
