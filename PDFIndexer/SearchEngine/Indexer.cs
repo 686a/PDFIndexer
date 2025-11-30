@@ -89,6 +89,8 @@ namespace PDFIndexer.SearchEngine
                         string content = ContentOrderTextExtractor.GetText(page);
                         doc.Add(new TextField("content", content, Field.Store.YES));
 
+                        bool hasImage = page.GetImages().Count() > 0;
+
                         // DB 업데이트
                         dbCollection.Delete($"{path}//{page.Number}");
                         var dbItem = new IndexedDocument
@@ -98,7 +100,7 @@ namespace PDFIndexer.SearchEngine
                             Page = page.Number,
                             MD5 = hash,
                             LastModified = lastModified,
-                            OCRDone = false,
+                            OCRDone = AppSettings.OCREnabled && !hasImage ? true : false, // OCR은 켜져있지만, 페이지에 이미지가 없다면 OCR 완료로 표시
                         };
                         dbCollection.Upsert(dbItem);
 
@@ -115,7 +117,7 @@ namespace PDFIndexer.SearchEngine
                         writer.AddDocument(doc);
 
                         // 이미지 OCR task enqueue
-                        if (AppSettings.OCREnabled)
+                        if (AppSettings.OCREnabled && hasImage)
                             TaskManager.Enqueue(new OCRTask(path, page.Number, isLastPage));
                     }
 
