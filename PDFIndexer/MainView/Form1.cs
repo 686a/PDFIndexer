@@ -6,7 +6,14 @@ using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Web.WebView2.Core;
+using PDFIndexer.BackgroudTask;
+using PDFIndexer.BackgroundTask;
+using PDFIndexer.Journal;
+using PDFIndexer.SearchEngine;
+using PDFIndexer.Services;
+using PDFIndexer.SettingsView;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,16 +28,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
-using PDFIndexer.Journal;
 using static Lucene.Net.Util.Fst.Builder;
 using static Lucene.Net.Util.Packed.PackedInt32s;
+using static PDFIndexer.BackgroundTask.TaskManager;
 using Directory = System.IO.Directory;
-using PDFIndexer.SearchEngine;
-using PDFIndexer.Services;
-using PDFIndexer.SettingsView;
-using Microsoft.Toolkit.Uwp.Notifications;
-using PDFIndexer.BackgroundTask;
-using PDFIndexer.BackgroudTask;
 
 namespace PDFIndexer
 {
@@ -266,7 +267,7 @@ namespace PDFIndexer
 
                 new ToastContentBuilder()
                     .AddText("인덱싱 완료")
-                    .AddText($"{pdfs.Count}개 문서가 인덱싱되었습니다.")
+                    .AddText($"{pdfs.Count}개 문서가 인덱싱되었습니다.\n백그라운드 작업 중에도 여전히 검색을 시작할 수 있습니다.")
                     .Show();
             });
 
@@ -338,6 +339,63 @@ namespace PDFIndexer
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            TaskManager.OnTaskStart += (name, description) =>
+            {
+                if (!Visible) return;
+
+                MainStatusStrip.BeginInvoke((MethodInvoker)delegate
+                {
+                    BackgroundTaskStatusTextLabel.Text = $"백그라운드 작업 {TaskManager.GetRemainTasks()}개 남음 :";
+
+                    if (!BackgroundTaskStatusLabel.Visible)
+                        BackgroundTaskStatusLabel.Visible = true;
+
+                    if (description != null)
+                        BackgroundTaskStatusLabel.Text = $"[{name}] {description}";
+                    else
+                        BackgroundTaskStatusLabel.Text = $"{name}";
+                });
+
+                BeginInvoke((MethodInvoker)delegate
+                {
+                    TrayIcon.Text = $"PDFIndexer - 백그라운드 작업 {TaskManager.GetRemainTasks()}개 남음";
+                });
+            };
+
+            TaskManager.OnTaskDone += () =>
+            {
+                if (!Visible) return;
+
+                if (BackgroundTaskStatusTextLabel.Text != "준비")
+                {
+                    MainStatusStrip.BeginInvoke((MethodInvoker)delegate
+                    {
+                        BackgroundTaskStatusTextLabel.Text = "준비";
+                    });
+                }
+
+                if (BackgroundTaskStatusLabel.Visible)
+                {
+                    MainStatusStrip.BeginInvoke((MethodInvoker)delegate
+                    {
+                        BackgroundTaskStatusLabel.Visible = false;
+                    });
+                }
+
+                if (TrayIcon.Text != "PDFIndexer")
+                {
+                    BeginInvoke((MethodInvoker)delegate
+                    {
+                        TrayIcon.Text = $"PDFIndexer";
+                    });
+                }
+
+                new ToastContentBuilder()
+                    .AddText("백그라운드 작업 완료")
+                    .AddText($"{TaskManager.TasksDone}개 작업이 완료되었습니다.")
+                    .Show();
+            };
+
             IndexProgressTextLabel.Text = LuceneProvider.Ready ? "Ready" : "Not Ready";
             LuceneProvider.OnReady += () =>
             {

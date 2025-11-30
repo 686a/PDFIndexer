@@ -36,6 +36,9 @@ namespace PDFIndexer.BackgroundTask
         private static StreamWriter Writer;
         private static Queue<OCRTask> InternalQueue = new Queue<OCRTask>(); // 작업 내부 큐
 
+        public override string Name => "OCR";
+        public override string Description => $"{Path.Replace(AppSettings.BasePath, "").Replace(System.IO.Path.DirectorySeparatorChar, '/')} - {Page} 페이지";
+
         private string Path;
         private int Page;
         private bool IsLastPage = false;

@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.TrayIconMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ShowMainUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -52,15 +52,18 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsButton = new System.Windows.Forms.Button();
-            this.IndexAllButton = new PDFIndexer.IconTextButtonControl();
-            this.IndexMissingButton = new PDFIndexer.IconTextButtonControl();
-            this.DuplicateManagerButton = new PDFIndexer.IconTextButtonControl();
             this.ProgressPanel = new System.Windows.Forms.TableLayoutPanel();
             this.IndexProgressPanel = new System.Windows.Forms.TableLayoutPanel();
             this.IndexProgressLabel = new System.Windows.Forms.Label();
             this.IndexProgressBar = new System.Windows.Forms.ProgressBar();
             this.IndexProgressTextLabel = new System.Windows.Forms.Label();
-            this.contextMenuStrip1.SuspendLayout();
+            this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.BackgroundTaskStatusTextLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.BackgroundTaskStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.IndexAllButton = new PDFIndexer.IconTextButtonControl();
+            this.IndexMissingButton = new PDFIndexer.IconTextButtonControl();
+            this.DuplicateManagerButton = new PDFIndexer.IconTextButtonControl();
+            this.TrayIconMenuStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -73,24 +76,25 @@
             this.flowLayoutPanel3.SuspendLayout();
             this.ProgressPanel.SuspendLayout();
             this.IndexProgressPanel.SuspendLayout();
+            this.MainStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // notifyIcon1
+            // TrayIcon
             // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = global::PDFIndexer.Properties.Resources.PDFIndexerIcon_Tiny;
-            this.notifyIcon1.Text = "PDFIndexer";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.TrayIcon.ContextMenuStrip = this.TrayIconMenuStrip;
+            this.TrayIcon.Icon = global::PDFIndexer.Properties.Resources.PDFIndexerIcon_Tiny;
+            this.TrayIcon.Text = "PDFIndexer";
+            this.TrayIcon.Visible = true;
+            this.TrayIcon.Click += new System.EventHandler(this.notifyIcon1_Click);
+            this.TrayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
-            // contextMenuStrip1
+            // TrayIconMenuStrip
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TrayIconMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ShowMainUIToolStripMenuItem,
             this.ExitToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(142, 48);
+            this.TrayIconMenuStrip.Name = "contextMenuStrip1";
+            this.TrayIconMenuStrip.Size = new System.Drawing.Size(142, 48);
             // 
             // ShowMainUIToolStripMenuItem
             // 
@@ -123,7 +127,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1225, 760);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1225, 744);
             this.tableLayoutPanel1.TabIndex = 25;
             // 
             // tableLayoutPanel3
@@ -178,7 +182,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1219, 672);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1219, 656);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
             // SearchResultPanel
@@ -189,7 +193,7 @@
             this.SearchResultPanel.Location = new System.Drawing.Point(3, 52);
             this.SearchResultPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SearchResultPanel.Name = "SearchResultPanel";
-            this.SearchResultPanel.Size = new System.Drawing.Size(343, 616);
+            this.SearchResultPanel.Size = new System.Drawing.Size(343, 600);
             this.SearchResultPanel.TabIndex = 17;
             this.SearchResultPanel.WrapContents = false;
             // 
@@ -269,7 +273,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(352, 51);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(864, 618);
+            this.panel2.Size = new System.Drawing.Size(864, 602);
             this.panel2.TabIndex = 18;
             // 
             // WebViewVirtualPanel
@@ -281,7 +285,7 @@
             this.WebViewVirtualPanel.Location = new System.Drawing.Point(0, 0);
             this.WebViewVirtualPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.WebViewVirtualPanel.Name = "WebViewVirtualPanel";
-            this.WebViewVirtualPanel.Size = new System.Drawing.Size(864, 618);
+            this.WebViewVirtualPanel.Size = new System.Drawing.Size(864, 602);
             this.WebViewVirtualPanel.TabIndex = 26;
             // 
             // noFileLabel
@@ -312,7 +316,7 @@
             this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel3, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.ProgressPanel, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 715);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 699);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -344,6 +348,102 @@
             this.SettingsButton.TabIndex = 21;
             this.SettingsButton.UseVisualStyleBackColor = true;
             this.SettingsButton.Click += new System.EventHandler(this.SettingsButton_Click);
+            // 
+            // ProgressPanel
+            // 
+            this.ProgressPanel.ColumnCount = 1;
+            this.ProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.ProgressPanel.Controls.Add(this.IndexProgressPanel, 0, 0);
+            this.ProgressPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProgressPanel.Location = new System.Drawing.Point(3, 3);
+            this.ProgressPanel.MaximumSize = new System.Drawing.Size(343, 36);
+            this.ProgressPanel.Name = "ProgressPanel";
+            this.ProgressPanel.RowCount = 1;
+            this.ProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.ProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.ProgressPanel.Size = new System.Drawing.Size(343, 36);
+            this.ProgressPanel.TabIndex = 27;
+            this.ProgressPanel.Visible = false;
+            // 
+            // IndexProgressPanel
+            // 
+            this.IndexProgressPanel.AutoSize = true;
+            this.IndexProgressPanel.ColumnCount = 3;
+            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.IndexProgressPanel.Controls.Add(this.IndexProgressLabel, 2, 0);
+            this.IndexProgressPanel.Controls.Add(this.IndexProgressBar, 1, 0);
+            this.IndexProgressPanel.Controls.Add(this.IndexProgressTextLabel, 0, 0);
+            this.IndexProgressPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IndexProgressPanel.Location = new System.Drawing.Point(0, 0);
+            this.IndexProgressPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.IndexProgressPanel.MaximumSize = new System.Drawing.Size(343, 36);
+            this.IndexProgressPanel.Name = "IndexProgressPanel";
+            this.IndexProgressPanel.RowCount = 1;
+            this.IndexProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.IndexProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.IndexProgressPanel.Size = new System.Drawing.Size(343, 36);
+            this.IndexProgressPanel.TabIndex = 28;
+            // 
+            // IndexProgressLabel
+            // 
+            this.IndexProgressLabel.AutoSize = true;
+            this.IndexProgressLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IndexProgressLabel.Location = new System.Drawing.Point(292, 0);
+            this.IndexProgressLabel.MinimumSize = new System.Drawing.Size(48, 1);
+            this.IndexProgressLabel.Name = "IndexProgressLabel";
+            this.IndexProgressLabel.Size = new System.Drawing.Size(48, 36);
+            this.IndexProgressLabel.TabIndex = 3;
+            this.IndexProgressLabel.Text = "0.0%";
+            this.IndexProgressLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // IndexProgressBar
+            // 
+            this.IndexProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.IndexProgressBar.Location = new System.Drawing.Point(49, 9);
+            this.IndexProgressBar.Margin = new System.Windows.Forms.Padding(0);
+            this.IndexProgressBar.Maximum = 1000;
+            this.IndexProgressBar.MaximumSize = new System.Drawing.Size(0, 18);
+            this.IndexProgressBar.Name = "IndexProgressBar";
+            this.IndexProgressBar.Size = new System.Drawing.Size(240, 18);
+            this.IndexProgressBar.TabIndex = 2;
+            // 
+            // IndexProgressTextLabel
+            // 
+            this.IndexProgressTextLabel.AutoSize = true;
+            this.IndexProgressTextLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IndexProgressTextLabel.Location = new System.Drawing.Point(3, 0);
+            this.IndexProgressTextLabel.MinimumSize = new System.Drawing.Size(43, 1);
+            this.IndexProgressTextLabel.Name = "IndexProgressTextLabel";
+            this.IndexProgressTextLabel.Size = new System.Drawing.Size(43, 36);
+            this.IndexProgressTextLabel.TabIndex = 1;
+            this.IndexProgressTextLabel.Text = "인덱싱";
+            this.IndexProgressTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // MainStatusStrip
+            // 
+            this.MainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BackgroundTaskStatusTextLabel,
+            this.BackgroundTaskStatusLabel});
+            this.MainStatusStrip.Location = new System.Drawing.Point(0, 759);
+            this.MainStatusStrip.Name = "MainStatusStrip";
+            this.MainStatusStrip.Size = new System.Drawing.Size(1249, 22);
+            this.MainStatusStrip.SizingGrip = false;
+            this.MainStatusStrip.TabIndex = 26;
+            // 
+            // BackgroundTaskStatusTextLabel
+            // 
+            this.BackgroundTaskStatusTextLabel.Name = "BackgroundTaskStatusTextLabel";
+            this.BackgroundTaskStatusTextLabel.Size = new System.Drawing.Size(31, 17);
+            this.BackgroundTaskStatusTextLabel.Text = "준비";
+            // 
+            // BackgroundTaskStatusLabel
+            // 
+            this.BackgroundTaskStatusLabel.Name = "BackgroundTaskStatusLabel";
+            this.BackgroundTaskStatusLabel.Size = new System.Drawing.Size(31, 17);
+            this.BackgroundTaskStatusLabel.Text = "상태";
+            this.BackgroundTaskStatusLabel.Visible = false;
             // 
             // IndexAllButton
             // 
@@ -389,81 +489,11 @@
             this.DuplicateManagerButton.UseVisualStyleBackColor = true;
             this.DuplicateManagerButton.Click += new System.EventHandler(this.DuplicateMangerButton_Click);
             // 
-            // ProgressPanel
-            // 
-            this.ProgressPanel.ColumnCount = 1;
-            this.ProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.ProgressPanel.Controls.Add(this.IndexProgressPanel, 0, 0);
-            this.ProgressPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProgressPanel.Location = new System.Drawing.Point(3, 3);
-            this.ProgressPanel.MaximumSize = new System.Drawing.Size(343, 36);
-            this.ProgressPanel.Name = "ProgressPanel";
-            this.ProgressPanel.RowCount = 1;
-            this.ProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.ProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.ProgressPanel.Size = new System.Drawing.Size(343, 36);
-            this.ProgressPanel.TabIndex = 27;
-            this.ProgressPanel.Visible = false;
-            // 
-            // IndexProgressPanel
-            // 
-            this.IndexProgressPanel.AutoSize = true;
-            this.IndexProgressPanel.ColumnCount = 3;
-            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.IndexProgressPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.IndexProgressPanel.Controls.Add(this.IndexProgressLabel, 2, 0);
-            this.IndexProgressPanel.Controls.Add(this.IndexProgressBar, 1, 0);
-            this.IndexProgressPanel.Controls.Add(this.IndexProgressTextLabel, 0, 0);
-            this.IndexProgressPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IndexProgressPanel.Location = new System.Drawing.Point(0, 0);
-            this.IndexProgressPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.IndexProgressPanel.MaximumSize = new System.Drawing.Size(343, 36);
-            this.IndexProgressPanel.Name = "IndexProgressPanel";
-            this.IndexProgressPanel.RowCount = 1;
-            this.IndexProgressPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.IndexProgressPanel.Size = new System.Drawing.Size(343, 36);
-            this.IndexProgressPanel.TabIndex = 28;
-            // 
-            // IndexProgressLabel
-            // 
-            this.IndexProgressLabel.AutoSize = true;
-            this.IndexProgressLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IndexProgressLabel.Location = new System.Drawing.Point(292, 0);
-            this.IndexProgressLabel.MinimumSize = new System.Drawing.Size(48, 1);
-            this.IndexProgressLabel.Name = "IndexProgressLabel";
-            this.IndexProgressLabel.Size = new System.Drawing.Size(48, 36);
-            this.IndexProgressLabel.TabIndex = 3;
-            this.IndexProgressLabel.Text = "0.0%";
-            this.IndexProgressLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IndexProgressBar
-            // 
-            this.IndexProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.IndexProgressBar.Location = new System.Drawing.Point(49, 9);
-            this.IndexProgressBar.Margin = new System.Windows.Forms.Padding(0);
-            this.IndexProgressBar.Maximum = 1000;
-            this.IndexProgressBar.MaximumSize = new System.Drawing.Size(0, 18);
-            this.IndexProgressBar.Name = "IndexProgressBar";
-            this.IndexProgressBar.Size = new System.Drawing.Size(240, 18);
-            this.IndexProgressBar.TabIndex = 2;
-            // 
-            // IndexProgressTextLabel
-            // 
-            this.IndexProgressTextLabel.AutoSize = true;
-            this.IndexProgressTextLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IndexProgressTextLabel.Location = new System.Drawing.Point(3, 0);
-            this.IndexProgressTextLabel.MinimumSize = new System.Drawing.Size(43, 1);
-            this.IndexProgressTextLabel.Name = "IndexProgressTextLabel";
-            this.IndexProgressTextLabel.Size = new System.Drawing.Size(43, 36);
-            this.IndexProgressTextLabel.TabIndex = 1;
-            this.IndexProgressTextLabel.Text = "인덱싱";
-            this.IndexProgressTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1249, 781);
+            this.Controls.Add(this.MainStatusStrip);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Malgun Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Icon = global::PDFIndexer.Properties.Resources.PDFIndexerIcon;
@@ -477,7 +507,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.TrayIconMenuStrip.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
@@ -496,13 +526,16 @@
             this.ProgressPanel.PerformLayout();
             this.IndexProgressPanel.ResumeLayout(false);
             this.IndexProgressPanel.PerformLayout();
+            this.MainStatusStrip.ResumeLayout(false);
+            this.MainStatusStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.NotifyIcon TrayIcon;
+        private System.Windows.Forms.ContextMenuStrip TrayIconMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem ShowMainUIToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -532,6 +565,9 @@
         private System.Windows.Forms.Label IndexProgressLabel;
         private System.Windows.Forms.ProgressBar IndexProgressBar;
         private System.Windows.Forms.Label IndexProgressTextLabel;
+        private System.Windows.Forms.StatusStrip MainStatusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel BackgroundTaskStatusTextLabel;
+        private System.Windows.Forms.ToolStripStatusLabel BackgroundTaskStatusLabel;
     }
 }
 

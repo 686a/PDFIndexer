@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static PDFIndexer.BackgroundTask.TaskManager;
 
 namespace PDFIndexer.BackgroundTask
 {
@@ -13,9 +14,13 @@ namespace PDFIndexer.BackgroundTask
         private static Queue<AbstractTask> Tasks;
         private static Queue<AbstractTask> PriorityTasks;
         private static HashSet<KeyValuePair<string, string>> TaskHashes;
+        private static AbstractTask CurrentTask;
 
         private Thread TaskThread;
         private bool NeedToStop = false;
+        private bool IsLastEmpty = true;
+        private static int _TasksDone = 0;
+        public static int TasksDone { get { return _TasksDone; } }
 
 #if DEBUG
         private static readonly int EmptyTaskPenalty = 3000;
@@ -24,6 +29,12 @@ namespace PDFIndexer.BackgroundTask
         private static readonly int EmptyTaskPenalty = 30 * 1000;
         private static readonly int DelayPerTask = 3000;
 #endif
+
+        public delegate void TaskStart(string name, string description);
+        public static event TaskStart OnTaskStart;
+
+        public delegate void TaskDone();
+        public static event TaskDone OnTaskDone;
 
         public TaskManager()
         {
@@ -53,29 +64,41 @@ namespace PDFIndexer.BackgroundTask
                 // Empty task queue panelty
                 if (Tasks.Count == 0 && PriorityTasks.Count == 0)
                 {
+                    if (!IsLastEmpty)
+                    {
+                        IsLastEmpty = true;
+                        OnTaskDone?.Invoke();
+                    }
+
                     Thread.Sleep(EmptyTaskPenalty);
                     continue;
                 }
 
-                AbstractTask task;
+                if (IsLastEmpty)
+                {
+                    IsLastEmpty = false;
+                    _TasksDone = 0;
+                }
 
                 if (PriorityTasks.Count > 0)
                 {
-                    task = PriorityTasks.Dequeue();
+                    CurrentTask = PriorityTasks.Dequeue();
                 } else
                 {
-                    task = Tasks.Dequeue();
+                    CurrentTask = Tasks.Dequeue();
                 }
 
-                var hash = new KeyValuePair<string, string>(task.ToString(), task.GetTaskHash());
+                var hash = new KeyValuePair<string, string>(CurrentTask.ToString(), CurrentTask.GetTaskHash());
 
                 // 작업 실행
                 Logger.Write($"[TaskManager] Task started: {hash.Key}/{hash.Value}");
-                task.Run();
+                OnTaskStart?.Invoke(CurrentTask.Name, CurrentTask.Description);
+                CurrentTask.Run();
                 Logger.Write($"[TaskManager] Task done: {hash.Key}/{hash.Value}");
 
                 // 작업 종료 후 해시 목록에서 제거
                 TaskHashes.Remove(hash);
+                _TasksDone++;
 
                 Thread.Sleep(DelayPerTask);
             }
@@ -99,6 +122,18 @@ namespace PDFIndexer.BackgroundTask
         {
             var hash = new KeyValuePair<string, string>(type, taskHash);
             return TaskHashes.Contains(hash);
+        }
+
+        public static KeyValuePair<string, string> GetCurrentTask()
+        {
+            if (CurrentTask == null) return new KeyValuePair<string, string>(null, null);
+
+            return new KeyValuePair<string, string>(CurrentTask.Name, CurrentTask.Description);
+        }
+
+        public static int GetRemainTasks()
+        {
+            return TaskHashes.Count;
         }
     }
 }

@@ -11,6 +11,11 @@ namespace PDFIndexer.BackgroudTask
 {
     internal class IndexTask : AbstractTask
     {
+        private static readonly Properties.Settings AppSettings = Properties.Settings.Default;
+
+        public override string Name => "인덱스";
+        public override string Description => $"{Path.Replace(AppSettings.BasePath, "")}";
+
         private string Path;
 
         public IndexTask( string path)

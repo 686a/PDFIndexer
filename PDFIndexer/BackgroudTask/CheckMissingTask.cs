@@ -13,6 +13,9 @@ namespace PDFIndexer.BackgroudTask
     {
         private static readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
+        public override string Name => "새 파일 확인";
+        public override string Description => null;
+
         public override void Run()
         {
             var files = new List<string>();
