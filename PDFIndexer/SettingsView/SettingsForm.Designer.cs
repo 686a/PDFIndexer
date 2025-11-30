@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
@@ -149,7 +148,7 @@
             this.tableLayoutPanel9.Controls.Add(this.label16, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 1);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 446);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 476);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 4;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -388,7 +387,7 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(587, 179);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(587, 209);
             this.tableLayoutPanel6.TabIndex = 21;
             // 
             // tableLayoutPanel16
@@ -404,7 +403,7 @@
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(581, 32);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(581, 47);
             this.tableLayoutPanel16.TabIndex = 21;
             // 
             // OCREngineComboBox
@@ -470,11 +469,11 @@
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.OCRCPUPriorityComboBox, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 144);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 159);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(581, 32);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(581, 47);
             this.tableLayoutPanel5.TabIndex = 20;
             // 
             // tableLayoutPanel4
@@ -657,7 +656,7 @@
             this.tableLayoutPanel8.Controls.Add(this.AutorunCheckBox, 0, 1);
             this.tableLayoutPanel8.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 262);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 292);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 7;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());

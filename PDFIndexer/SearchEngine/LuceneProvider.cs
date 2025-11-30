@@ -1,17 +1,12 @@
 ﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Cjk;
-using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 using PDFIndexer.Journal;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LuceneDirectory = Lucene.Net.Store.Directory;
 
 namespace PDFIndexer.SearchEngine

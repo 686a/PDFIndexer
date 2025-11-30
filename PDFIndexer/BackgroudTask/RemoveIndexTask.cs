@@ -1,11 +1,6 @@
 ﻿using PDFIndexer.BackgroundTask;
 using PDFIndexer.SearchEngine;
 using PDFIndexer.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PDFIndexer.BackgroudTask
 {

@@ -1,22 +1,15 @@
-﻿using LiteDB;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
-using PDFIndexer.BackgroudTask;
 using PDFIndexer.BackgroundTask;
 using PDFIndexer.Journal;
-using PDFIndexer.Models;
 using PDFIndexer.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
-using Windows.UI.Xaml.Shapes;
 
 namespace PDFIndexer.SearchEngine
 {

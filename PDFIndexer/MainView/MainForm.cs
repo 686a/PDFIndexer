@@ -1,36 +1,16 @@
-﻿using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.QueryParsers.Classic;
-using Lucene.Net.Search;
-using Lucene.Net.Store;
-using Lucene.Net.Util;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Microsoft.Web.WebView2.Core;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
 using PDFIndexer.BackgroudTask;
 using PDFIndexer.BackgroundTask;
-using PDFIndexer.Journal;
 using PDFIndexer.SearchEngine;
 using PDFIndexer.Services;
 using PDFIndexer.SettingsView;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UglyToad.PdfPig;
-using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
-using static Lucene.Net.Util.Fst.Builder;
-using static Lucene.Net.Util.Packed.PackedInt32s;
-using static PDFIndexer.BackgroundTask.TaskManager;
 using Directory = System.IO.Directory;
 
 namespace PDFIndexer

@@ -1,16 +1,12 @@
-﻿using Lucene.Net.Analysis;
-using Lucene.Net.Documents;
+﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
-using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.QueryParsers.Simple;
 using Lucene.Net.Search;
-using Lucene.Net.Util;
 using PDFIndexer.Models;
 using PDFIndexer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PDFIndexer.SearchEngine

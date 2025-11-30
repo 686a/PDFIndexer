@@ -1,18 +1,12 @@
-﻿using Lucene.Net.Index;
-using Lucene.Net.Search;
-using PDFIndexer.BackgroudTask;
+﻿using PDFIndexer.BackgroudTask;
 using PDFIndexer.BackgroundTask;
 using PDFIndexer.DuplicateManager;
 using PDFIndexer.Models.Database;
-using PDFIndexer.SearchEngine;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
