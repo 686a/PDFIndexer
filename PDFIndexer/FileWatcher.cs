@@ -42,34 +42,40 @@ namespace PDFIndexer
         {
             Logger.Write($"[FSWatcher] Renamed: {e.OldFullPath} -> {e.FullPath}");
 
-            // TODO: Remove old index
-            EnqueueTask(e.FullPath);
+            EnqueueRemoveIndexTask(e.OldFullPath);
+            EnqueueIndexTask(e.FullPath);
         }
 
         private void FSWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
             Logger.Write($"[FSWatcher] Deleted: {e.FullPath}");
 
-            // TODO: Remove index
+            EnqueueRemoveIndexTask(e.FullPath);
         }
 
         private void FSWatcher_Created(object sender, FileSystemEventArgs e)
         {
             Logger.Write($"[FSWatcher] Created: {e.FullPath}");
 
-            EnqueueTask(e.FullPath);
+            EnqueueIndexTask(e.FullPath);
         }
 
         private void FSWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             Logger.Write($"[FSWatcher] Changed: {e.FullPath}");
 
-            EnqueueTask(e.FullPath);
+            EnqueueIndexTask(e.FullPath);
         }
 
-        private void EnqueueTask(string path)
+        private void EnqueueIndexTask(string path)
         {
             var task = new IndexTask(path);
+            TaskManager.Enqueue(task, true);
+        }
+
+        private void EnqueueRemoveIndexTask(string path)
+        {
+            var task = new RemoveIndexTask(path);
             TaskManager.Enqueue(task, true);
         }
     }
