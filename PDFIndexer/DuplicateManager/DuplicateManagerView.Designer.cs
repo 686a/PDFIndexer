@@ -90,7 +90,7 @@
             this.ReloadButton.Size = new System.Drawing.Size(95, 29);
             this.ReloadButton.TabIndex = 2;
             this.ReloadButton.UseVisualStyleBackColor = true;
-            this.ReloadButton.Click += new System.EventHandler(this.ReloadButton_Click);
+            this.ReloadButton.OnButtonClick += new PDFIndexer.IconTextButtonControl.ButtonClick(this.ReloadButton_Click);
             // 
             // SelectDeleteButton
             // 
@@ -102,7 +102,7 @@
             this.SelectDeleteButton.Size = new System.Drawing.Size(99, 29);
             this.SelectDeleteButton.TabIndex = 1;
             this.SelectDeleteButton.UseVisualStyleBackColor = true;
-            this.SelectDeleteButton.Click += new System.EventHandler(this.SelectDeleteButton_Click);
+            this.SelectDeleteButton.OnButtonClick += new PDFIndexer.IconTextButtonControl.ButtonClick(this.SelectDeleteButton_Click);
             // 
             // InvertSelectionButton
             // 
@@ -114,7 +114,7 @@
             this.InvertSelectionButton.Size = new System.Drawing.Size(93, 29);
             this.InvertSelectionButton.TabIndex = 4;
             this.InvertSelectionButton.UseVisualStyleBackColor = true;
-            this.InvertSelectionButton.Click += new System.EventHandler(this.InvertSelectionButton_Click);
+            this.InvertSelectionButton.OnButtonClick += new PDFIndexer.IconTextButtonControl.ButtonClick(this.InvertSelectionButton_Click);
             // 
             // SelectNonebutton
             // 
@@ -126,7 +126,7 @@
             this.SelectNonebutton.Size = new System.Drawing.Size(123, 29);
             this.SelectNonebutton.TabIndex = 3;
             this.SelectNonebutton.UseVisualStyleBackColor = true;
-            this.SelectNonebutton.Click += new System.EventHandler(this.SelectNonebutton_Click);
+            this.SelectNonebutton.OnButtonClick += new PDFIndexer.IconTextButtonControl.ButtonClick(this.SelectNonebutton_Click);
             // 
             // SelectAllButton
             // 
@@ -138,7 +138,7 @@
             this.SelectAllButton.Size = new System.Drawing.Size(97, 29);
             this.SelectAllButton.TabIndex = 3;
             this.SelectAllButton.UseVisualStyleBackColor = true;
-            this.SelectAllButton.Click += new System.EventHandler(this.SelectAllButton_Click);
+            this.SelectAllButton.OnButtonClick += new PDFIndexer.IconTextButtonControl.ButtonClick(this.SelectAllButton_Click);
             // 
             // DuplicateManagerView
             // 

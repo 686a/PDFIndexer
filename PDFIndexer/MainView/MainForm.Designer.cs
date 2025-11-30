@@ -362,7 +362,7 @@
             this.IndexAllButton.Size = new System.Drawing.Size(114, 30);
             this.IndexAllButton.TabIndex = 25;
             this.IndexAllButton.UseVisualStyleBackColor = true;
-            this.IndexAllButton.Click += new System.EventHandler(this.IndexAllButton_Click);
+            this.IndexAllButton.OnButtonClick += new PDFIndexer.IconTextButtonControl.ButtonClick(this.IndexAllButton_Click);
             // 
             // IndexMissingButton
             // 
@@ -377,6 +377,7 @@
             this.IndexMissingButton.Size = new System.Drawing.Size(127, 30);
             this.IndexMissingButton.TabIndex = 26;
             this.IndexMissingButton.UseVisualStyleBackColor = true;
+            this.IndexMissingButton.OnButtonClick += new PDFIndexer.IconTextButtonControl.ButtonClick(this.IndexMissingButton_OnButtonClick);
             // 
             // DuplicateManagerButton
             // 
@@ -391,7 +392,7 @@
             this.DuplicateManagerButton.Size = new System.Drawing.Size(114, 30);
             this.DuplicateManagerButton.TabIndex = 24;
             this.DuplicateManagerButton.UseVisualStyleBackColor = true;
-            this.DuplicateManagerButton.Click += new System.EventHandler(this.DuplicateMangerButton_Click);
+            this.DuplicateManagerButton.OnButtonClick += new PDFIndexer.IconTextButtonControl.ButtonClick(this.DuplicateMangerButton_Click);
             // 
             // ProgressPanel
             // 

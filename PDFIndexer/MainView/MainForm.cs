@@ -282,7 +282,7 @@ namespace PDFIndexer
         #endregion 검색 관련 이벤트
 
         #region 인덱서 관련 이벤트
-        private void IndexAllButton_Click(object sender, EventArgs e)
+        private void IndexAllButton_Click()
         {
             var result = MessageBox.Show(
                 "정말로 모두 새로 인덱싱하겠습니까?\n\n주의: 이 작업은 오래걸릴 수도 있습니다.",
@@ -401,7 +401,7 @@ namespace PDFIndexer
             }
         }
 
-        private void DuplicateMangerButton_Click(object sender, EventArgs e)
+        private void DuplicateMangerButton_Click()
         {
             duplicateManagerView.ShowDialog();
         }
@@ -510,6 +510,11 @@ namespace PDFIndexer
         private void Form1_Shown(object sender, EventArgs e)
         {
             if (BackgroundMode) HideMainUI();
+        }
+
+        private void IndexMissingButton_OnButtonClick()
+        {
+            TaskManager.Enqueue(new CheckMissingTask());
         }
     }
 }

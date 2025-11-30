@@ -46,8 +46,14 @@ namespace PDFIndexer
         private PictureBox pictureBox;
         private Label label;
 
+        public delegate void ButtonClick();
+        public event ButtonClick OnButtonClick;
+        private bool OwnClick;
+
         public IconTextButtonControl()
         {
+            MouseDown += (_, e) => { OwnClick = false; };
+            Click += (_, __) => HandleClick();
         }
 
         protected override void InitLayout()
@@ -141,11 +147,26 @@ namespace PDFIndexer
             control.MouseEnter += (_, e) => base.OnMouseEnter(e);
             control.MouseLeave += (_, e) => base.OnMouseLeave(e);
             control.MouseMove += (_, e) => base.OnMouseMove(e);
-            control.Click += (_, e) => base.OnClick(e);
-            control.MouseDown += (s, e) => base.OnMouseDown(e);
+            control.Click += (s, e) => HandleClick();
+            control.MouseDown += (s, e) => HandleMouseDown(e);
             control.MouseUp += (s, e) => base.OnMouseUp(e);
             control.GotFocus += (s, e) => base.OnGotFocus(e);
             control.LostFocus += (s, e) => base.OnLostFocus(e);
+        }
+
+        private void HandleMouseDown(MouseEventArgs e)
+        {
+            OwnClick = false;
+            base.OnMouseDown(e);
+        }
+
+        private void HandleClick()
+        {
+            if (!OwnClick)
+            {
+                OwnClick = true;
+                OnButtonClick?.Invoke();
+            }
         }
     }
 }

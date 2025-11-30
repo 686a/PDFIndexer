@@ -224,12 +224,12 @@ namespace PDFIndexer
             }
         }
 
-        private void ReloadButton_Click(object sender, EventArgs e)
+        private void ReloadButton_Click()
         {
             LoadDuplicates();
         }
 
-        private async void SelectDeleteButton_Click(object sender, EventArgs e)
+        private async void SelectDeleteButton_Click()
         {
             var confirm = MessageBox.Show($"정말로 선택한 {SelectedFiles.Count}개의 파일을 삭제할까요?\n\n이 작업은 되둘릴 수 없습니다!", "삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (confirm != DialogResult.Yes) return;
@@ -281,7 +281,7 @@ namespace PDFIndexer
             LoadDuplicates();
         }
 
-        private void SelectNonebutton_Click(object sender, EventArgs e)
+        private void SelectNonebutton_Click()
         {
             for (int i = 0; i < tableLayoutPanel1.Controls.Count; i++)
             {
@@ -296,7 +296,7 @@ namespace PDFIndexer
             }
         }
 
-        private void SelectAllButton_Click(object sender, EventArgs e)
+        private void SelectAllButton_Click()
         {
             for (int i = 0; i < tableLayoutPanel1.Controls.Count; i++)
             {
@@ -311,7 +311,7 @@ namespace PDFIndexer
             }
         }
 
-        private void InvertSelectionButton_Click(object sender, EventArgs e)
+        private void InvertSelectionButton_Click()
         {
             for (int i = 0; i < tableLayoutPanel1.Controls.Count; i++)
             {
