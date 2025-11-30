@@ -1,5 +1,6 @@
 ﻿using PDFIndexer.BackgroundTask;
 using PDFIndexer.Models.Database;
+using PDFIndexer.SearchEngine;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +17,7 @@ namespace PDFIndexer.BackgroudTask
         public override void Run()
         {
             var files = new List<string>();
-            FindAllPdfFiles(ref files, AppSettings.BasePath, true);
+            Indexer.FindAllPdfFiles(ref files, AppSettings.BasePath, true);
 
             var missingAll = new List<string>();
             var missingOnlyOCR = new List<KeyValuePair<string, int>>(); // Pair<Path, Page>
@@ -62,27 +63,6 @@ namespace PDFIndexer.BackgroudTask
         {
             string id = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
             return $"CheckMissingTask-{id}";
-        }
-
-        private void FindAllPdfFiles(ref List<string> found, string path, bool recursive = false)
-        {
-            var files = Directory.GetFiles(path);
-            foreach (var file in files)
-            {
-                if (file.EndsWith(".pdf"))
-                {
-                    found.Add(file);
-                }
-            }
-
-            if (recursive)
-            {
-                var dirs = Directory.GetDirectories(path);
-                foreach (var dir in dirs)
-                {
-                    FindAllPdfFiles(ref found, dir, true);
-                }
-            }
         }
     }
 }

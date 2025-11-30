@@ -2,6 +2,7 @@
 using PDFIndexer.BackgroundTask;
 using PDFIndexer.DuplicateManager;
 using PDFIndexer.Models.Database;
+using PDFIndexer.SearchEngine;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -45,7 +46,7 @@ namespace PDFIndexer
             await Task.Run(() =>
             {
                 var found = new List<string>();
-                FindAllPdfFiles(ref found, AppSettings.BasePath, true);
+                Indexer.FindAllPdfFiles(ref found, AppSettings.BasePath, true);
 
                 var dbCollection = DBContext.DB.GetCollection<IndexedDocument>("indexed");
                 foreach (var path in found)
@@ -201,27 +202,6 @@ namespace PDFIndexer
             }
 
             SelectedTotalSizeLabel.Text = $"{SelectedFiles.Count}개 ({converted}{convertedUnit})";
-        }
-
-        private void FindAllPdfFiles(ref List<string> found, string path, bool recursive = false)
-        {
-            var files = Directory.GetFiles(path);
-            foreach (var file in files)
-            {
-                if (file.EndsWith(".pdf"))
-                {
-                    found.Add(file);
-                }
-            }
-
-            if (recursive)
-            {
-                var dirs = Directory.GetDirectories(path);
-                foreach (var dir in dirs)
-                {
-                    FindAllPdfFiles(ref found, dir, true);
-                }
-            }
         }
 
         private void ReloadButton_Click()

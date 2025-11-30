@@ -223,5 +223,26 @@ namespace PDFIndexer.SearchEngine
             // 업데이트가 필요한 문서들 업데이트
             //indexer.IndexPdfs(toUpdate.ToArray());
         }
+
+        public static void FindAllPdfFiles(ref List<string> found, string path, bool recursive = false)
+        {
+            var files = Directory.GetFiles(path);
+            foreach (var file in files)
+            {
+                if (file.EndsWith(".pdf"))
+                {
+                    found.Add(file);
+                }
+            }
+
+            if (recursive)
+            {
+                var dirs = Directory.GetDirectories(path);
+                foreach (var dir in dirs)
+                {
+                    FindAllPdfFiles(ref found, dir, true);
+                }
+            }
+        }
     }
 }

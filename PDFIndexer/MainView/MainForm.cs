@@ -24,7 +24,7 @@ namespace PDFIndexer
             get { return AppSettings.BasePath; }
         }
 
-        private readonly List<string> pdfs = new List<string>();
+        private List<string> pdfs = new List<string>();
 
         // private Uri currentPdf;
 
@@ -182,26 +182,6 @@ namespace PDFIndexer
         #endregion 웹뷰 관련
 
         #region 인덱서 관련
-        private void FindAllPdfFiles(string path, bool recursive = false)
-        {
-            var files = Directory.GetFiles(path);
-            foreach (var file in files)
-            {
-                if (file.EndsWith(".pdf"))
-                {
-                    pdfs.Add(file);
-                }
-            }
-
-            if (recursive)
-            {
-                var dirs = Directory.GetDirectories(path);
-                foreach (var dir in dirs)
-                {
-                    FindAllPdfFiles(dir, true);
-                }
-            }
-        }
 
         private async void IndexAll()
         {
@@ -212,7 +192,7 @@ namespace PDFIndexer
             await Task.Run(() =>
             {
                 pdfs.Clear();
-                FindAllPdfFiles(basePath, true);
+                Indexer.FindAllPdfFiles(ref pdfs, basePath, true);
 
                 ProgressPanelInUse = true;
                 ProgressPanel.BeginInvoke((MethodInvoker)delegate
