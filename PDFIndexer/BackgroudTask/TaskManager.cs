@@ -17,12 +17,11 @@ namespace PDFIndexer.BackgroundTask
         private static int _TasksDone = 0;
         public static int TasksDone { get { return _TasksDone; } }
 
+        private static readonly int DelayPerTask = 1000;
 #if DEBUG
         private static readonly int EmptyTaskPenalty = 3000;
-        private static readonly int DelayPerTask = 1000;
 #else
         private static readonly int EmptyTaskPenalty = 30 * 1000;
-        private static readonly int DelayPerTask = 3000;
 #endif
 
         public delegate void TaskStart(string name, string description);
