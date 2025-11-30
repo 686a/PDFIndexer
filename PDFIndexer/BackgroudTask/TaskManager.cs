@@ -17,12 +17,13 @@ namespace PDFIndexer.BackgroundTask
         private static int _TasksDone = 0;
         public static int TasksDone { get { return _TasksDone; } }
 
-        private static readonly int DelayPerTask = 1000;
+        private static readonly int DelayPerTask = 500;
 #if DEBUG
         private static readonly int EmptyTaskPenalty = 3000;
 #else
         private static readonly int EmptyTaskPenalty = 30 * 1000;
 #endif
+        private static bool DoneFirstTask = false;
 
         public delegate void TaskStart(string name, string description);
         public static event TaskStart OnTaskStart;
@@ -64,7 +65,11 @@ namespace PDFIndexer.BackgroundTask
                         OnTaskDone?.Invoke();
                     }
 
-                    Thread.Sleep(EmptyTaskPenalty);
+                    if (DoneFirstTask)
+                        Thread.Sleep(EmptyTaskPenalty);
+                    else
+                        Thread.Sleep(3000);
+
                     continue;
                 }
 
@@ -93,6 +98,8 @@ namespace PDFIndexer.BackgroundTask
                 // 작업 종료 후 해시 목록에서 제거
                 TaskHashes.Remove(hash);
                 _TasksDone++;
+
+                DoneFirstTask = true;
 
                 Thread.Sleep(DelayPerTask);
             }
