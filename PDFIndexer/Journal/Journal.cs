@@ -27,6 +27,8 @@ namespace PDFIndexer.Journal
             int from = Math.Max(0, Logs.Count - 30);
             int to = Logs.Count;
             return Logs.GetRange(from, to).ToArray();
+#else
+            return new JournalMessage[0];
 #endif
         }
 
