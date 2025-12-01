@@ -24,14 +24,16 @@ namespace PDFIndexerOCR
 
         public Paddle()
         {
-            int useCpuThreads = 4;
+            int useCpuThreads = 1;
             switch (Process.GetCurrentProcess().PriorityClass)
             {
                 case ProcessPriorityClass.Idle:
-                    useCpuThreads = 4;
+                    useCpuThreads = 1;
+                    break;
+                case ProcessPriorityClass.BelowNormal:
+                    useCpuThreads = 2;
                     break;
                 case ProcessPriorityClass.Normal:
-                case ProcessPriorityClass.BelowNormal:
                     useCpuThreads = Environment.ProcessorCount / 2;
                     break;
                 case ProcessPriorityClass.AboveNormal:

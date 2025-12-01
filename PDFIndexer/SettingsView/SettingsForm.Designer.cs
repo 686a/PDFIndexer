@@ -373,6 +373,7 @@
             this.OCRCPUPriorityComboBox.FormattingEnabled = true;
             this.OCRCPUPriorityComboBox.Items.AddRange(new object[] {
             "최소",
+            "낮음",
             "보통",
             "높음",
             "CPU가 힘들어 할 정도로"});
