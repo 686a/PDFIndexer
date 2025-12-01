@@ -108,7 +108,7 @@ namespace PDFIndexer.BackgroundTask
 
                     try
                     {
-                        Client.Connect(5000);
+                        Client.Connect(30000);
 
                         Reader = new StreamReader(Client);
                         Writer = new StreamWriter(Client);
