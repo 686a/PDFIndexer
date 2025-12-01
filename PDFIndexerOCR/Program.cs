@@ -71,17 +71,20 @@ namespace PDFIndexerOCR
 
                         switch (nextArg.ToLower())
                         {
-                            case "high":
-                                priority = ProcessPriorityClass.High;
-                                break;
-                            case "normal":
-                                priority = ProcessPriorityClass.Normal;
+                            case "idle":
+                                priority = ProcessPriorityClass.Idle;
                                 break;
                             case "low":
                                 priority = ProcessPriorityClass.BelowNormal;
                                 break;
-                            case "idle":
-                                priority = ProcessPriorityClass.Idle;
+                            case "normal":
+                                priority = ProcessPriorityClass.Normal;
+                                break;
+                            case "high":
+                                priority = ProcessPriorityClass.AboveNormal;
+                                break;
+                            case "highest":
+                                priority = ProcessPriorityClass.High;
                                 break;
                             default:
                                 throw new ArgumentException($"Invalid value for {arg}");

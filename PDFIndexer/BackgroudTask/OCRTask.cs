@@ -70,6 +70,9 @@ namespace PDFIndexer.BackgroundTask
                 case 3:
                     priority = "high";
                     break;
+                case 4:
+                    priority = "highest";
+                    break;
             }
 
             var ocrProcessStartInfo = new ProcessStartInfo()
