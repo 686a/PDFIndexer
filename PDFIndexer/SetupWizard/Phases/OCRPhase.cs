@@ -51,7 +51,7 @@ namespace PDFIndexer.SetupWizard.Phases
 
             DescriptionLabel = new Label()
             {
-                Text = "OCR 기능은 :\n" +
+                Text = "\nOCR 기능은 :\n" +
                 "- 이미지 내 텍스트를 검색할 수 있도록 합니다.\n" +
                 "- 백그라운드에서 수행하고, 기본 기능과 별개로 동작합니다.\n" +
                 "- CPU, 메모리 사용량이 다소 높습니다.\n" +
