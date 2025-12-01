@@ -128,11 +128,16 @@ namespace PDFIndexer.BackgroundTask
 
                                 // 큐 Empty 패널티 부여
                                 // 큐가 비었다면 다음에도 비어있을 가능성이 높음.
-#if DEBUG
-                                Thread.Sleep(1000);
-#else
-                                Thread.Sleep(30 * 1000);
-#endif
+                                //
+                                // 다음 작업(OCRTask)이 들어오기 전에는 큐가 당연히 비어있음.
+                                // 따라서 작업 간 30초씩 의미없이 대기하게 됨.
+                                // 그래서 일단 200ms로 대체.
+                                Thread.Sleep(200);
+//#if DEBUG
+//                                Thread.Sleep(1000);
+//#else
+//                                Thread.Sleep(30 * 1000);
+//#endif
 
                                 continue;
                             }
