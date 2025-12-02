@@ -171,6 +171,7 @@ namespace PDFIndexer
         {
             noFileLabel.Visible = false;
 
+            FilenameLabel.Visible = true;
             FilenameLabel.Text = title;
 
             pdfWebView.OpenPDFInApp(path, page);

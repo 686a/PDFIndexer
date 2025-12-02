@@ -232,7 +232,7 @@
             this.FilenameLabel.Name = "FilenameLabel";
             this.FilenameLabel.Size = new System.Drawing.Size(53, 42);
             this.FilenameLabel.TabIndex = 7;
-            this.FilenameLabel.Text = "filename";
+            this.FilenameLabel.Text = "";
             this.FilenameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // flowLayoutPanel2
