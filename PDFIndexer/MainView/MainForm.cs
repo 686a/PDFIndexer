@@ -300,7 +300,7 @@ namespace PDFIndexer
 
         private void OpenInNewWindowButton_Click(object sender, EventArgs e)
         {
-            Process.Start("explorer.exe", pdfWebView.currentPdf.LocalPath.ToString());
+            Process.Start(pdfWebView.currentPdf.LocalPath.ToString());
         }
 
         private async void button2_Click(object sender, EventArgs e)
