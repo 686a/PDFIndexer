@@ -8,6 +8,7 @@
 - [PdfPig](https://github.com/UglyToad/PdfPig)
 - [Microsoft Edge WebView2](https://aka.ms/webview2)
 - [PaddleOCR](https://www.paddleocr.ai) with [PaddleSharp](https://github.com/sdcb/PaddleSharp)
+- [LiteDB](https://www.litedb.org/)
 
 ## License
 See [LICENSE](/LICENSE)
