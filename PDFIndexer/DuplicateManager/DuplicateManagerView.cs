@@ -211,7 +211,7 @@ namespace PDFIndexer
 
         private async void SelectDeleteButton_Click()
         {
-            var confirm = MessageBox.Show($"정말로 선택한 {SelectedFiles.Count}개의 파일을 삭제할까요?\n\n이 작업은 되둘릴 수 없습니다!", "삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var confirm = MessageBox.Show($"정말로 선택한 {SelectedFiles.Count}개의 파일을 삭제할까요?\n\n이 작업은 되돌릴 수 없습니다!", "삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (confirm != DialogResult.Yes) return;
 
             var basePath = AppSettings.BasePath;
