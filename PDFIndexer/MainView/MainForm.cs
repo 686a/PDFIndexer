@@ -74,6 +74,8 @@ namespace PDFIndexer
 
         private Thread SearchTimerThread;
 
+        private string CurrentFile;
+
         public MainForm(LuceneProvider provider, bool backgroundMode = false)
         {
 #if DEBUG
@@ -173,6 +175,8 @@ namespace PDFIndexer
 
             FilenameLabel.Visible = true;
             FilenameLabel.Text = title;
+
+            CurrentFile = path;
 
             pdfWebView.OpenPDFInApp(path, page);
         }
@@ -301,7 +305,8 @@ namespace PDFIndexer
 
         private void OpenInNewWindowButton_Click(object sender, EventArgs e)
         {
-            Process.Start(pdfWebView.currentPdf.LocalPath.ToString());
+            if (CurrentFile != null)
+                Process.Start(CurrentFile);
         }
 
         private async void button2_Click(object sender, EventArgs e)
